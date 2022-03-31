@@ -1,7 +1,8 @@
-from flask import Flask
-from flask import render_template
+from flask import Flask, render_template
+import gunicorn
 from datetime import datetime
 from . import app
+app = Flask(__name__)
 
 
 @app.route("/")

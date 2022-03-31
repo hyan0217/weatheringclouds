@@ -1,7 +1,7 @@
 from flask import Flask, render_template
+from utils import helpers
 import gunicorn
 from datetime import datetime
-from . import app
 app = Flask(__name__)
 
 

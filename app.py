@@ -1,7 +1,9 @@
-from flask import Flask, render_template
-from utils import helpers
+import os
+from flask import Flask, render_template, flash, redirect, request, session
 import gunicorn
 from datetime import datetime
+from helpers import apology
+
 app = Flask(__name__)
 
 
@@ -9,6 +11,9 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
+
+if __name__ == '__main__':
+    app.run()
 
 # @app.route("/about/")
 # def about():

@@ -13,7 +13,7 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.app()
 
 # @app.route("/about/")
 # def about():

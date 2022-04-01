@@ -35,6 +35,6 @@ if __name__ == '__main__':
 #     )
 
 
-@app.route("/api/data")
-def get_data():
-    return app.send_static_file("data.json")
+# @app.route("/api/data")
+# def get_data():
+#     return app.send_static_file("data.json")

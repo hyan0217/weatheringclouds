@@ -35,6 +35,30 @@ def login_required(f):
     return decorated_function
 
 
+def extendedSearch(ExtendSearch):
+    """Look up quote for symbol."""
+
+    # Contact API
+    try:
+        api_key = os.environ.get("API_KEY")
+        url = f"zillow-com1.p.rapidapi.com"
+        response = requests.get(url)
+        response.raise_for_status()
+    except requests.RequestException:
+        return None
+
+    # Parse response
+    try:
+        quote = response.json()
+        return {
+            "name": quote["companyName"],
+            "price": float(quote["latestPrice"]),
+            "symbol": quote["symbol"]
+        }
+    except (KeyError, TypeError, ValueError):
+        return None
+
+
 def usd(value):
     """Format value as USD."""
     return f"${value:,.2f}"

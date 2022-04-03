@@ -1,5 +1,5 @@
 import http.client
-import os
+import requests
 from flask import Flask, render_template, flash, redirect, request, session
 import gunicorn
 from datetime import datetime
@@ -9,13 +9,15 @@ import http.client
 app = Flask(__name__)
 
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html")
+    req = requests.get("https://findrealestate.herokuapp.com/")
+    print(req.content)
+    # return render_template("index.html")
 
 
 if __name__ == '__main__':
-    app.app()
+    app.app(debug=True)
 
 # @app.route("/about/")
 # def about():

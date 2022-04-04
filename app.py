@@ -3,25 +3,27 @@ import gunicorn
 from datetime import datetime
 from helpers import apology
 import requests
+import http.client
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def index():
-    url = "https://real-estate-usa.p.rapidapi.com/api/v1/properties"
-
-    querystring = {"postal_code": "94105", "offset": "0", "limit": "200"}
+    conn = http.client.HTTPSConnection("real-estate-usa.p.rapidapi.com")
 
     headers = {
-        "X-RapidAPI-Host": "real-estate-usa.p.rapidapi.com",
-        "X-RapidAPI-Key": "5d5d38275amsh8a0dad41cfbbabcp1d9de2jsn5bb539b8005f"
+        'X-RapidAPI-Host': "real-estate-usa.p.rapidapi.com",
+        'X-RapidAPI-Key': "5d5d38275amsh8a0dad41cfbbabcp1d9de2jsn5bb539b8005f"
     }
 
-    response = requests.request(
-        "GET", url, headers=headers, params=querystring)
+    conn.request(
+        "GET", "/api/v1/properties?postal_code=94105&offset=0&limit=200", headers=headers)
 
-    print(response.text)
+    res = conn.getresponse()
+    data = res.read()
+
+    print(data.decode("utf-8"))
     return render_template("index.html")
 
 

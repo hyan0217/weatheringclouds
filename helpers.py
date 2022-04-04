@@ -48,15 +48,15 @@ def login_required(f):
 #         return None
 
     # Parse response
-    try:
-        quote = response.json()
-        return {
-            "name": quote["companyName"],
-            "price": float(quote["latestPrice"]),
-            "symbol": quote["symbol"]
-        }
-    except (KeyError, TypeError, ValueError):
-        return None
+    # try:
+    #     quote = response.json()
+    #     return {
+    #         "name": quote["companyName"],
+    #         "price": float(quote["latestPrice"]),
+    #         "symbol": quote["symbol"]
+    #     }
+    # except (KeyError, TypeError, ValueError):
+    #     return None
 
 
 def usd(value):

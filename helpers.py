@@ -35,17 +35,17 @@ def login_required(f):
     return decorated_function
 
 
-def extendedSearch(ExtendSearch):
-    """Look up quote for symbol."""
+# def ResoWeb(Resoweb):
+#     """Look up quote for symbol."""
 
-    # Contact API
-    try:
-        api_key = os.environ.get("API_KEY")
-        url = f"zillow-com1.p.rapidapi.com"
-        response = requests.get(url)
-        response.raise_for_status()
-    except requests.RequestException:
-        return None
+#     # Contact API
+#     try:
+#         server_token = os.environ.get("X1-ZWz1iprtc8t4p7_5xiff")
+#         url = f"https://api.bridgedataoutput.com/api/v2/OData/{dataset_id}/{resource}?access_token={server_token}"
+#         response = requests.get(url)
+#         response.raise_for_status()
+#     except requests.RequestException:
+#         return None
 
     # Parse response
     try:

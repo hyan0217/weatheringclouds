@@ -1,19 +1,28 @@
-import http.client
-import requests
 from flask import Flask, render_template, flash, redirect, request, session
 import gunicorn
 from datetime import datetime
 from helpers import apology
-import http.client
+import requests
 
 app = Flask(__name__)
 
 
-@app.route("/", methods=["GET"])
+@app.route("/")
 def index():
-    req = requests.get("https://findrealestate.herokuapp.com/")
-    print(req.content)
-    # return render_template("index.html")
+    url = "https://real-estate-usa.p.rapidapi.com/api/v1/properties"
+
+    querystring = {"postal_code": "94105", "offset": "0", "limit": "200"}
+
+    headers = {
+        "X-RapidAPI-Host": "real-estate-usa.p.rapidapi.com",
+        "X-RapidAPI-Key": "5d5d38275amsh8a0dad41cfbbabcp1d9de2jsn5bb539b8005f"
+    }
+
+    response = requests.request(
+        "GET", url, headers=headers, params=querystring)
+
+    print(response.text)
+    return render_template("index.html")
 
 
 if __name__ == '__main__':

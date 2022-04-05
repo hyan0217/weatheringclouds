@@ -4,6 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <!-- Bootstrap CSS -->
     <link
@@ -30,9 +31,9 @@
     <nav class="bg-light border navbar navbar-expand-md navbar-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="/"
-          ><span class="blue">Rise</span><span class="red">n</span
-          ><span class="yellow"> Re</span><span class="green">al</span>
-          <span class="red">Estate</span></a
+          ><span class="blue">C</span><span class="red">$</span
+          ><span class="yellow">5</span><span class="green">0</span>
+          <span class="red">Finance</span></a
         >
         <button
           aria-controls="navbar"
@@ -79,5 +80,21 @@
         </div>
       </div>
     </nav>
+
+    {% if get_flashed_messages() %}
+    <header>
+      <div class="alert alert-primary mb-0 text-center" role="alert">
+        {{ get_flashed_messages() | join(" ") }}
+      </div>
+    </header>
+    {% endif %}
+
+    <main class="container-fluid py-5 text-center">
+      {% block main %}{% endblock %}
+    </main>
+
+    <footer class="mb-5 small text-center text-muted">
+      Data provided by <a href="https://iexcloud.io/">IEX</a>
+    </footer>
   </body>
 </html>

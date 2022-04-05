@@ -1,30 +1,27 @@
 from flask import Flask, render_template, flash, redirect, request, session
 import gunicorn
+from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from helpers import apology
 import requests
-import http.client
 
 app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://fqynupfmgfwmad:11761e23bb9545022e3b1d45555fc6155ff7e31c7e42fa6b2dd1a99623b60447@ec2-18-214-134-226.compute-1.amazonaws.com:5432/d191cjrfl7dcnm'
 
 
 @app.route("/")
 def index():
-    conn = http.client.HTTPSConnection("real-estate-usa.p.rapidapi.com")
-
-    headers = {
-        'X-RapidAPI-Host': "real-estate-usa.p.rapidapi.com",
-        'X-RapidAPI-Key': "5d5d38275amsh8a0dad41cfbbabcp1d9de2jsn5bb539b8005f"
-    }
-
-    conn.request(
-        "GET", "/api/v1/properties?postal_code=94105&offset=0&limit=200", headers=headers)
-
-    res = conn.getresponse()
-    data = res.read()
-
-    print(data.decode("utf-8"))
     return render_template("index.html")
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 404
+
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template("500.html"), 500
 
 
 if __name__ == '__main__':
@@ -38,16 +35,6 @@ if __name__ == '__main__':
 # @app.route("/contact/")
 # def contact():
 #     return render_template("contact.html")
-
-
-# @app.route("/hello/")
-# @app.route("/hello/<name>")
-# def hello_there(name=None):
-#     return render_template(
-#         "hello_there.html",
-#         name=name,
-#         date=datetime.now()
-#     )
 
 
 # @app.route("/api/data")

@@ -3,16 +3,14 @@ block main %}
 
 <h2>Find Your Dream Home</h2>
 <br />
-<table class="table table-striped">
+{% comment %} <table class="table table-striped">
   <thead>
+    {% for address in addresses %}
     <tr>
-      <th>Symbol</th>
-      <th>Company Name</th>
-      <th>Shares</th>
-      <th>Current Price</th>
-      <th>Total Amount</th>
-    </tr>
+      <td>{{ address ["number"] }}</td>
+      <td>{{ address ["street"] }}</td>
+      <td>{{ address ["zipcode"] }}</td>
   </thead>
   </tr>
-</table>
+</table> {% endcomment %}
 {% endblock %}

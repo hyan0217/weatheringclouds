@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Weathering Clouds</a>
+    <a class="navbar-brand" href="{{url_for('index')}}">Weathering Clouds</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -45,6 +45,14 @@
         />
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('login')}}">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('register')}}">Register</a>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>

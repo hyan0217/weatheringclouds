@@ -1,19 +1,58 @@
 from flask import Flask, render_template, flash, redirect, request, session
 import gunicorn
+from forms import RegistrationForm, LoginForm
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 from datetime import datetime
 import requests
 
-# test
-
 app = Flask(__name__)
+# Adding Database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+# Secret Key
+app.config['SECRET_KEY'] = "2c1b9360123f14339ae48bcd70433bf3"
+# Initialize Database
+db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://fqynupfmgfwmad:11761e23bb9545022e3b1d45555fc6155ff7e31c7e42fa6b2dd1a99623b60447@ec2-18-214-134-226.compute-1.amazonaws.com:5432/d191cjrfl7dcnm'
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    imageFile = db.Column(db.String(20), nullable=False, default='default.jpg')
+    password = db.Column(db.String(60), nullable=False)
+    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Creating a string
+    def __repr__(self):
+        return f"User('{self.username}', '{self.email}', '{self.imageFile}')"
 
 
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        flash(f'Account created for {form.username.data}!', 'success')
+        return redirect("/")
+    return render_template("register.html", title='Register', form=form)
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        if form.email.data == 'admin@blog.com' and form.password.data == 'password':
+            flash('You have been logged in!', 'success')
+            return redirect("/")
+        else:
+            flash('Login Unsuccessful. Please check username and password', 'danger')
+    return render_template("login.html", title='Login', form=form)
 
 
 @app.errorhandler(404)

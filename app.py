@@ -1,12 +1,17 @@
+import os
+from itsdangerous.serializer import Serializer
 from flask import Flask, render_template, flash, redirect, request, session, url_for
 import gunicorn
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, SubmitField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, current_user,  logout_user, login_required
 from datetime import datetime
+import secrets
+from PIL import Image
 import requests
 
 app = Flask(__name__)
@@ -78,6 +83,8 @@ class UpdateAccountForm(FlaskForm):
     username = StringField('Username', validators=[
                            DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
+    picture = FileField('Update Profile Picture', validators=[
+                        FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Update')
 
     def validate_username(self, username):
@@ -139,11 +146,31 @@ def logout():
     return redirect("/")
 
 
+def save_picture(form_picture):
+    # Allows user to update and saves avatar pictures
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(
+        app.root_path, 'static/profile_pics', picture_fn)
+    # Scales down images to prevent server overload
+    output_size = (125, 125)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+
+    return picture_fn
+
+
 @app.route("/account", methods=["GET", "POST"])
 @login_required
+# Allows user to update their account information
 def account():
     form = UpdateAccountForm()
     if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            current_user.imageFile = picture_file
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()

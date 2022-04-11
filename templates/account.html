@@ -54,4 +54,10 @@
                     </div>
             </form>
     </div>
+    <div>
+        <br/><br/><br/>
+        {% for our_user in our_users %}
+            {{ our_user.id }} - {{ our_user.username }} - {{ our_user.email}}<br/>
+        {% endfor %}
+    </div>
 {% endblock content %}

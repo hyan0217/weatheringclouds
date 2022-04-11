@@ -8,6 +8,7 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, current_user,  logout_user, login_required
+from flask_migrate import Migrate
 from datetime import datetime
 import secrets
 from PIL import Image
@@ -21,6 +22,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Hyisfb1120!@localh
 app.config['SECRET_KEY'] = "2c1b9360123f14339ae48bcd70433bf3"
 # Initialize Database
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 # Generates hashed passwords
 bcrypt = Bcrypt(app)
 # Remembers the users login credentials
@@ -199,7 +201,8 @@ def account():
         form.email.data = current_user.email
     imageFile = url_for(
         'static', filename='profile_pics/' + current_user.imageFile)
-    return render_template("account.html", title='Account', imageFile=imageFile, form=form)
+    our_users = User.query.order_by(User.date_added)
+    return render_template("account.html", title='Account', imageFile=imageFile, form=form, our_users=our_users)
 
 
 @app.route("/reset_password", methods=["GET", "POST"])

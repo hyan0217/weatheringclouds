@@ -12,7 +12,6 @@ from flask_login import LoginManager, UserMixin, login_user, current_user,  logo
 from datetime import datetime
 import secrets
 from PIL import Image
-import requests
 
 app = Flask(__name__)
 # Adding Database

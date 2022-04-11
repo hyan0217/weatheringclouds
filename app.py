@@ -1,5 +1,4 @@
 import os
-from itsdangerous.serializer import Serializer
 from flask import Flask, render_template, flash, redirect, request, session, url_for
 import gunicorn
 from flask_wtf import FlaskForm
@@ -15,8 +14,9 @@ from PIL import Image
 import requests
 
 app = Flask(__name__)
-# Adding Database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+# Connecting to the Database
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Hyisfb1120!@localhost/userdatabase'
 # Secret Key
 app.config['SECRET_KEY'] = "2c1b9360123f14339ae48bcd70433bf3"
 # Initialize Database
@@ -55,7 +55,7 @@ class RegistrationForm(FlaskForm):
                            DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-    confirmPassword = PasswordField('Confirm Password', validators=[
+    confirm_password = PasswordField('Confirm Password', validators=[
         DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up Now')
 
@@ -100,6 +100,24 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError(
                     'Email is already taken. Please choose a different email.')
+
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError(
+                'There is no account with that email. You must register first.')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[
+        DataRequired(), EqualTo('password')])
+    submit = SubmitField('Reset Password')
 
 
 @app.route("/")
@@ -182,6 +200,20 @@ def account():
     imageFile = url_for(
         'static', filename='profile_pics/' + current_user.imageFile)
     return render_template("account.html", title='Account', imageFile=imageFile, form=form)
+
+
+@app.route("/reset_password", methods=["GET", "POST"])
+@login_required
+# Allows user to reset their passwords
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect("/")
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        flash('An email has been sent with instructions to reset your password.', 'info')
+        return redirect("/login")
+    return render_template("reset_request.html", title='Reset Password', form=form)
 
 
 @app.errorhandler(404)

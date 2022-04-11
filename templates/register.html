@@ -45,16 +45,16 @@
                     {% endif %}
                 </div>
                 <div class="form-group">
-                    {{ form.confirmPassword.label(class="form-control-label") }} 
-                    {% if form.confirmPassword.errors %} 
-                        {{ form.confirmPassword(class="form-control form-control-lg is-invalid") }}
+                    {{ form.confirm_password.label(class="form-control-label") }} 
+                    {% if form.confirm_password.errors %} 
+                        {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
-                            {% for error in form.confirmPassword.errors %}
+                            {% for error in form.confirm_password.errors %}
                                 <span>{{ error }}</span>
                         {% endfor %}
                         </div>
                     {% else %} 
-                        {{ form.confirmPassword(class="form-control form-control-lg") }} 
+                        {{ form.confirm_password(class="form-control form-control-lg") }} 
                     {% endif %}
                 </div>
                 </fieldset>

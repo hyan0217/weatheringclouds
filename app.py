@@ -41,21 +41,24 @@ def load_user(user_id):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(30), nullable=False)
+    first_name = db.Column(db.String(30), nullable=False)
+    last_name = db.Column(db.String(30), nullable=False)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    imageFile = db.Column(db.String(20), nullable=False,
-                          default='default.jpg')
+    image_file = db.Column(db.String(20), nullable=False,
+                           default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
 
     # Creating a string
     def __repr__(self):
-        return f"User('{self.name}', '{self.username}', '{self.email}', '{self.imageFile}')"
+        return f"User('{self.first_name}', '{self.last_name}', '{self.username}', '{self.email}', '{self.image_file}')"
 
 
 class RegistrationForm(FlaskForm):
-    name = StringField('Full Name', validators=[
-                       DataRequired(), Length(min=2, max=30)])
+    first_name = StringField('First Name', validators=[
+        DataRequired(), Length(min=2, max=30)])
+    last_name = StringField('Last Name', validators=[
+        DataRequired(), Length(min=2, max=30)])
     username = StringField('Username', validators=[
                            DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -85,8 +88,10 @@ class LoginForm(FlaskForm):
 
 
 class UpdateAccountForm(FlaskForm):
-    name = StringField('Name', validators=[
-                       DataRequired(), Length(min=2, max=30)])
+    first_name = StringField('First Name', validators=[
+        DataRequired(), Length(min=2, max=30)])
+    last_name = StringField('Last Name', validators=[
+        DataRequired(), Length(min=2, max=30)])
     username = StringField('Username', validators=[
                            DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -140,7 +145,7 @@ def register():
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(
             form.password.data).decode('utf-8')
-        user = User(name=form.name.data, username=form.username.data,
+        user = User(first_name=form.first_name.data, last_name=form.last_name.data, username=form.username.data,
                     email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
@@ -195,20 +200,22 @@ def account():
     if form.validate_on_submit():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
-            current_user.imageFile = picture_file
-        current_user.name = form.name.data
+            current_user.image_file = picture_file
+        current_user.first_name = form.first_name.data
+        current_user.last_name = form.last_name.data
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()
         flash('Your account has been updated!', 'success')
         return redirect("/account")
     elif request.method == "GET":
-        form.name.data = current_user.name
+        form.first_name.data = current_user.first_name
+        form.last_name.data = current_user.last_name
         form.username.data = current_user.username
         form.email.data = current_user.email
-    imageFile = url_for(
-        'static', filename='profile_pics/' + current_user.imageFile)
-    return render_template("account.html", title='Account', imageFile=imageFile, form=form)
+    image_file = url_for(
+        'static', filename='profile_pics/' + current_user.image_file)
+    return render_template("account.html", title='Account', image_file=image_file, form=form)
 
 
 @app.route("/reset_password", methods=["GET", "POST"])

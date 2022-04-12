@@ -46,7 +46,6 @@ class User(db.Model, UserMixin):
     imageFile = db.Column(db.String(20), nullable=False,
                           default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
-    date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Creating a string
     def __repr__(self):
@@ -202,8 +201,7 @@ def account():
         form.email.data = current_user.email
     imageFile = url_for(
         'static', filename='profile_pics/' + current_user.imageFile)
-    our_users = User.query.order_by(User.date_added)
-    return render_template("account.html", title='Account', imageFile=imageFile, form=form, our_users=our_users)
+    return render_template("account.html", title='Account', imageFile=imageFile, form=form)
 
 
 @app.route("/reset_password", methods=["GET", "POST"])

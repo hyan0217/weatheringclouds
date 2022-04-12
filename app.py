@@ -16,11 +16,11 @@ import requests
 
 app = Flask(__name__)
 # Connecting to the Database
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://fqynupfmgfwmad:11761e23bb9545022e3b1d45555fc6155ff7e31c7e42fa6b2dd1a99623b60447@ec2-18-214-134-226.compute-1.amazonaws.com:5432/d191cjrfl7dcnm'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://fqynupfmgfwmad:11761e23bb9545022e3b1d45555fc6155ff7e31c7e42fa6b2dd1a99623b60447@ec2-18-214-134-226.compute-1.amazonaws.com:5432/d191cjrfl7dcnm'
 # Secret Key
-# app.config['SECRET_KEY'] = "2c1b9360123f14339ae48bcd70433bf3"
-app.config['SECRET_KEY'] = "11761e23bb9545022e3b1d45555fc6155ff7e31c7e42fa6b2dd1a99623b60447"
+app.config['SECRET_KEY'] = "2c1b9360123f14339ae48bcd70433bf3"
+# app.config['SECRET_KEY'] = "11761e23bb9545022e3b1d45555fc6155ff7e31c7e42fa6b2dd1a99623b60447"
 # Initialize Database
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -41,6 +41,7 @@ def load_user(user_id):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(30), nullable=False)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     imageFile = db.Column(db.String(20), nullable=False,
@@ -49,10 +50,12 @@ class User(db.Model, UserMixin):
 
     # Creating a string
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.imageFile}')"
+        return f"User('{self.name}', '{self.username}', '{self.email}', '{self.imageFile}')"
 
 
 class RegistrationForm(FlaskForm):
+    name = StringField('Full Name', validators=[
+                       DataRequired(), Length(min=2, max=30)])
     username = StringField('Username', validators=[
                            DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -82,6 +85,8 @@ class LoginForm(FlaskForm):
 
 
 class UpdateAccountForm(FlaskForm):
+    name = StringField('Name', validators=[
+                       DataRequired(), Length(min=2, max=30)])
     username = StringField('Username', validators=[
                            DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -135,7 +140,7 @@ def register():
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(
             form.password.data).decode('utf-8')
-        user = User(username=form.username.data,
+        user = User(name=form.name.data, username=form.username.data,
                     email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
@@ -191,12 +196,14 @@ def account():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             current_user.imageFile = picture_file
+        current_user.name = form.name.data
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()
         flash('Your account has been updated!', 'success')
         return redirect("/account")
     elif request.method == "GET":
+        form.name.data = current_user.name
         form.username.data = current_user.username
         form.email.data = current_user.email
     imageFile = url_for(

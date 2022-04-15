@@ -12,7 +12,9 @@ from flask_migrate import Migrate
 from datetime import datetime
 import secrets
 from PIL import Image
-import requests
+
+from helpers import image_of_day
+
 
 app = Flask(__name__)
 # Connecting to the Database
@@ -37,6 +39,11 @@ login_manager.login_message_category = 'info'
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+# Make sure API key is set
+if not os.environ.get("NASA_API_KEY"):
+    raise RuntimeError("NASA_API_KEY not set")
 
 
 class User(db.Model, UserMixin):
@@ -132,9 +139,12 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField('Reset Password')
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("index.html")
+
+    images = image_of_day()
+
+    return render_template("index.html", images=images)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -171,6 +181,7 @@ def login():
 
 
 @app.route("/logout")
+# Logs user out
 def logout():
     logout_user()
     return redirect("/")

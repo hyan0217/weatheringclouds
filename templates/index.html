@@ -1,6 +1,8 @@
 {% extends "layout.html" %} {% block content %}
-<h1>Find Your Dream Home</h1>
-<p>This is my pizza!</p>
-<br />
-<h1>Hello World!</h1>
+    <div class="row">
+        <h1>NASA Astronomy Picture Of The Day</h1>
+        <h3>Date: <span id="date"></span></h3>
+        <img class="rounded mx-auto d-block" src="{{images}}" alt="NASA Picture of The Day" width="100%">
+        <p id="explanation"></p>
+    </div>
 {% endblock %}

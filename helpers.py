@@ -1,25 +1,22 @@
-import os
 import requests
-import urllib.parse
-from flask import redirect, render_template, request, session
-import gunicorn
-from functools import wraps
+import os
+import json
+from datetime import datetime
+
+# Contact API
+API_KEY = 'bfq9crxRTUSWOm6ydUjze2m3l98ETJwtknrS8XN2'
+url = "https://api.nasa.gov/planetary/apod"
 
 
-def login_required(f):
-    """
-    Decorate routes to require login.
+def image_of_day():
 
-    https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
-    """
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get("user_id") is None:
-            return redirect("/login")
-        return f(*args, **kwargs)
-    return decorated_function
+    params = {
+        'api_key': API_KEY,
+        'hd': 'True',
+        'date': datetime.today().strftime('%Y-%m-%d')
+    }
 
-
-def usd(value):
-    """Format value as USD."""
-    return f"${value:,.2f}"
+    response = requests.get(url, params=params)
+    json_data = json.loads(response.text)
+    image_url = json_data['url']
+    return(image_url)

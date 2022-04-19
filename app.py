@@ -41,9 +41,9 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-# Make sure API key is set
-if not os.environ.get("NASA_API_KEY"):
-    raise RuntimeError("NASA_API_KEY not set")
+# # Make sure API key is set
+# if not os.environ.get("NASA_API_KEY"):
+#     raise RuntimeError("NASA_API_KEY not set")
 
 
 class User(db.Model, UserMixin):

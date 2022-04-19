@@ -13,8 +13,10 @@ from datetime import datetime
 import secrets
 from PIL import Image
 
-from helpers import image_of_day
+import nasa.apod_object_parser as apod_object_parser
 
+response = apod_object_parser.get_data(
+    'bfq9crxRTUSWOm6ydUjze2m3l98ETJwtknrS8XN2')
 
 app = Flask(__name__)
 # Connecting to the Database
@@ -142,9 +144,12 @@ class ResetPasswordForm(FlaskForm):
 @app.route("/", methods=["GET", "POST"])
 def index():
 
-    images = image_of_day()
+    dates = apod_object_parser.get_date(response)
+    explanation = apod_object_parser.get_explanation(response)
+    hdurl = apod_object_parser.get_hdurl(response)
+    title = apod_object_parser.get_title(response)
 
-    return render_template("index.html", images=images)
+    return render_template("index.html", dates=dates, explanation=explanation, hdurl=hdurl, title=title)
 
 
 @app.route("/register", methods=["GET", "POST"])

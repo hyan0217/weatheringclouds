@@ -1,8 +1,6 @@
 
 import requests
 import json
-import os
-from PIL import Image
 
 
 def get_data(api_key):
@@ -17,9 +15,9 @@ def get_date(response):
     return date
 
 
-def get_explaination(response):
-    explaination = response['explanation']
-    return explaination
+def get_explanation(response):
+    explanation = response['explanation']
+    return explanation
 
 
 def get_hdurl(response):
@@ -27,21 +25,6 @@ def get_hdurl(response):
     return hdurl
 
 
-def get_media_type(response):
-    media_type = response['media_type']
-    return media_type
-
-
-def get_service_version(response):
-    service_version = response['service_version']
-    return service_version
-
-
 def get_title(response):
     service_version = response['title']
     return service_version
-
-
-def get_url(response):
-    url = response['url']
-    return url

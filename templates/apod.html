@@ -1,12 +1,15 @@
 {% extends "layout.html" %} {% block content %}
 <h1 class="center-block">NASA Astronomy Picture Of The Day</h1>
-<br/>
+<div class="mt-lg-4">
 <h2>Today's Title: {{title}} </h2>
 <h3>Date: <span id="date">{{dates}}</span></h3>
-<br/>
+</div>
 <img class="center-block" src="{{hdurl}}" alt="NASA Picture of The Day" width="100%">
-<br/>
+<div class="mt-lg-4">
+<blockquote class="blockquote text-center">
 <p id="explanation"><b>Description:</b> {{explanation}}</p>
+</blockquote>
+</div>
 <br/>
 <h3>Search for a Different Image (Input Date)</h3>
   <form method="POST" action="{{url_for('search')}} "class="d-flex">

@@ -3,7 +3,7 @@ from flask import Flask, render_template, flash, redirect, request, session, url
 import gunicorn
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, SubmitField, PasswordField, BooleanField
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, DateField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
@@ -13,10 +13,16 @@ from datetime import datetime
 import secrets
 from PIL import Image
 
-import nasa.apod_object_parser as apod_object_parser
+import nasa.apod
+import nasa.NeoWs.asteroids
+import nasa.search
 
-response = apod_object_parser.get_data(
+response = nasa.apod.get_data(
     'bfq9crxRTUSWOm6ydUjze2m3l98ETJwtknrS8XN2')
+
+response = nasa.search.get_data(
+    'bfq9crxRTUSWOm6ydUjze2m3l98ETJwtknrS8XN2')
+
 
 app = Flask(__name__)
 # Connecting to the Database
@@ -26,6 +32,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://fqynupfmgfwmad:11761e23bb9
 app.config['SECRET_KEY'] = "2c1b9360123f14339ae48bcd70433bf3"
 app.config['SECRET_KEY'] = "11761e23bb9545022e3b1d45555fc6155ff7e31c7e42fa6b2dd1a99623b60447"
 # Initialize Database
+# Ensure templates are auto-reloaded
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 # Generates hashed passwords
@@ -141,15 +149,51 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField('Reset Password')
 
 
+# class SearchForm(FlaskForm):
+#     searched = DateField('entrydate', format='%m-%d-%Y',
+#                          validators=[DataRequired()])
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
 
-    dates = apod_object_parser.get_date(response)
-    explanation = apod_object_parser.get_explanation(response)
-    hdurl = apod_object_parser.get_hdurl(response)
-    title = apod_object_parser.get_title(response)
+    return render_template("index.html")
 
-    return render_template("index.html", dates=dates, explanation=explanation, hdurl=hdurl, title=title)
+
+# @app.context_processor
+# def base():
+#     form = SearchForm()
+#     return dict(form=form)
+
+
+@app.route("/search", methods=["GET", "POST"])
+def search():
+
+    dates = nasa.search.get_date(response)
+    explanation = nasa.search.get_explanation(response)
+    hdurl = nasa.search.get_hdurl(response)
+    title = nasa.search.get_title(response)
+
+    return render_template("search.html", dates=dates, explanation=explanation, hdurl=hdurl, title=title)
+
+
+@app.route("/apod", methods=["GET", "POST"])
+def apod():
+
+    dates = nasa.apod.get_date(response)
+    explanation = nasa.apod.get_explanation(response)
+    hdurl = nasa.apod.get_hdurl(response)
+    title = nasa.apod.get_title(response)
+
+    return render_template("apod.html", dates=dates, explanation=explanation, hdurl=hdurl, title=title)
+
+
+@app.route("/asteroids", methods=["GET", "POST"])
+def asteroids():
+
+    asteroids = nasa.NeoWs.asteroids.Asteroids()
+
+    return render_template("asteroids.html", asteroids=asteroids)
 
 
 @app.route("/register", methods=["GET", "POST"])

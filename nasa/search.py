@@ -1,4 +1,5 @@
-
+from flask import render_template
+from datetime import datetime
 import requests
 import json
 
@@ -11,7 +12,7 @@ def get_data(api_key):
 
 
 def get_date(response):
-    date = response['date']
+    date = response['date(%Y-%m-%d)']
     return date
 
 
@@ -26,5 +27,5 @@ def get_hdurl(response):
 
 
 def get_title(response):
-    service_version = response['title']
-    return service_version
+    title = response['title']
+    return title

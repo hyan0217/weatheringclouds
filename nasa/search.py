@@ -12,7 +12,7 @@ def get_data(api_key):
 
 
 def get_date(response):
-    date = response['date(%Y-%m-%d)']
+    date = response['date']
     return date
 
 

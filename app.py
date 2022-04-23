@@ -185,7 +185,9 @@ def apod():
     hdurl = nasa.apod.get_hdurl(response)
     title = nasa.apod.get_title(response)
 
-    return render_template("apod.html", dates=dates, explanation=explanation, hdurl=hdurl, title=title)
+    search = nasa.apod.get_search(response)
+
+    return render_template("apod.html", dates=dates, explanation=explanation, hdurl=hdurl, title=title, search=search)
 
 
 @app.route("/asteroids", methods=["GET", "POST"])

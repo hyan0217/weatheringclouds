@@ -1,3 +1,4 @@
+
 from astropy.time import Time
 
 from datetime import date
@@ -6,10 +7,11 @@ import requests
 
 
 class Asteroids:
+    def __init__(self, api_key: str):
+        self.api_key = api_key
+        self.api_endpoint = 'https://api.nasa.gov/neo/rest/v1/feed'
 
     def get_asteroids_today(self):
-        api_key = 'bfq9crxRTUSWOm6ydUjze2m3l98ETJwtknrS8XN2'
-        api_endpoint = "https://api.nasa.gov/neo/rest/v1/feed/"
         asteroid_list = []
 
         today_str = str(date.today())

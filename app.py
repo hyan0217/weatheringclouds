@@ -16,6 +16,7 @@ from PIL import Image
 import nasa.apod
 import nasa.NeoWs.asteroids
 import nasa.search
+import nasa.epic
 
 response = nasa.apod.get_data(
     'bfq9crxRTUSWOm6ydUjze2m3l98ETJwtknrS8XN2')
@@ -149,21 +150,10 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField('Reset Password')
 
 
-# class SearchForm(FlaskForm):
-#     searched = DateField('entrydate', format='%m-%d-%Y',
-#                          validators=[DataRequired()])
-
-
 @app.route("/", methods=["GET", "POST"])
 def index():
 
     return render_template("index.html")
-
-
-# @app.context_processor
-# def base():
-#     form = SearchForm()
-#     return dict(form=form)
 
 
 @app.route("/search", methods=["GET", "POST"])
@@ -196,6 +186,15 @@ def asteroids():
     asteroids = nasa.NeoWs.asteroids.Asteroids()
 
     return render_template("asteroids.html", asteroids=asteroids)
+
+
+@app.route("/epic", methods=["GET", "POST"])
+def epic():
+
+    image = nasa.epic.get_data(response)
+    date = nasa.epic.get_date(response)
+
+    return render_template("epic.html", image=image, date=date)
 
 
 @app.route("/register", methods=["GET", "POST"])

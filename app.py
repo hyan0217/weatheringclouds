@@ -3,7 +3,7 @@ from flask import Flask, render_template, flash, redirect, request, session, url
 import gunicorn
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, SubmitField, PasswordField, BooleanField, DateField
+from wtforms import StringField, SubmitField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
@@ -12,16 +12,12 @@ from flask_migrate import Migrate
 from datetime import datetime
 import secrets
 from PIL import Image
+import requests
+import applications.apod
+import applications.NeoWs.asteroids
+import applications.epic
 
-import nasa.apod
-import nasa.NeoWs.asteroids
-import nasa.search
-import nasa.epic
-
-response = nasa.apod.get_data(
-    'bfq9crxRTUSWOm6ydUjze2m3l98ETJwtknrS8XN2')
-
-response = nasa.search.get_data(
+response = applications.apod.get_data(
     'bfq9crxRTUSWOm6ydUjze2m3l98ETJwtknrS8XN2')
 
 
@@ -156,34 +152,21 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/search", methods=["GET", "POST"])
-def search():
-
-    dates = nasa.search.get_date(response)
-    explanation = nasa.search.get_explanation(response)
-    hdurl = nasa.search.get_hdurl(response)
-    title = nasa.search.get_title(response)
-
-    return render_template("search.html", dates=dates, explanation=explanation, hdurl=hdurl, title=title)
-
-
 @app.route("/apod", methods=["GET", "POST"])
 def apod():
 
-    dates = nasa.apod.get_date(response)
-    explanation = nasa.apod.get_explanation(response)
-    hdurl = nasa.apod.get_hdurl(response)
-    title = nasa.apod.get_title(response)
+    dates = applications.apod.get_date(response)
+    explanation = applications.apod.get_explanation(response)
+    hdurl = applications.apod.get_hdurl(response)
+    title = applications.apod.get_title(response)
 
-    search = nasa.apod.get_search(response)
-
-    return render_template("apod.html", dates=dates, explanation=explanation, hdurl=hdurl, title=title, search=search)
+    return render_template("apod.html", dates=dates, explanation=explanation, hdurl=hdurl, title=title)
 
 
 @app.route("/asteroids", methods=["GET", "POST"])
 def asteroids():
 
-    asteroids = nasa.NeoWs.asteroids.Asteroids()
+    asteroids = applications.NeoWs.asteroids.Asteroids()
 
     return render_template("asteroids.html", asteroids=asteroids)
 
@@ -191,10 +174,33 @@ def asteroids():
 @app.route("/epic", methods=["GET", "POST"])
 def epic():
 
-    image = nasa.epic.get_data(response)
-    date = nasa.epic.get_date(response)
+    image = applications.epic.get_data(response)
+    date = applications.epic.get_date(response)
 
     return render_template("epic.html", image=image, date=date)
+
+
+@app.route("/weather", methods=["GET", "POST"])
+def weather():
+
+    if request.method == "POST":
+        city = request.form['city']
+        country = request.form['country']
+        api_key = 'b851c93129e5dedcd44599b32d25bad3'
+
+        url = requests.get(
+            f'https://api.openweathermap.org/data/2.5/weather?appid={api_key}&units=imperial&q={city},{country}')
+
+        weather_data = url.json()
+
+        temperature = round(weather_data['main']['temp'])
+        humidity = weather_data['main']['humidity']
+        feels = weather_data['main']['feels_like']
+        clouds = weather_data['clouds']['all']
+        speed = weather_data['wind']['speed']
+
+        return render_template("weather.html", temperature=temperature, humidity=humidity, speed=speed, feels=feels, clouds=clouds)
+    return render_template("weather.html")
 
 
 @app.route("/register", methods=["GET", "POST"])

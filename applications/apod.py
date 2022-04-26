@@ -28,10 +28,3 @@ def get_hdurl(response):
 def get_title(response):
     title = response['title']
     return title
-
-
-def get_search(response):
-    search = response['date']
-    response = requests.post(
-        f'https://api.nasa.gov/planetary/apod?api_key={get_data}&{search}')
-    print(response)

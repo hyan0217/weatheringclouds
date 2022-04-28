@@ -18,7 +18,7 @@ import applications.NeoWs.asteroids
 import applications.epic
 
 response = applications.apod.get_data(
-    'bfq9crxRTUSWOm6ydUjze2m3l98ETJwtknrS8XN2')
+    'DEMO_KEY')
 
 
 app = Flask(__name__)
@@ -48,9 +48,9 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-# # Make sure API key is set
-# if not os.environ.get("NASA_API_KEY"):
-#     raise RuntimeError("NASA_API_KEY not set")
+# Make sure API key is set
+if not os.environ.get("WEATHER_KEY"):
+    raise RuntimeError("WEATHER_KEY not set")
 
 
 class User(db.Model, UserMixin):
@@ -186,20 +186,21 @@ def weather():
     if request.method == "POST":
         city = request.form['city']
         country = request.form['country']
-        api_key = 'b851c93129e5dedcd44599b32d25bad3'
-
+        api_key = os.environ.get("WEATHER_KEY")
         url = requests.get(
             f'https://api.openweathermap.org/data/2.5/weather?appid={api_key}&units=imperial&q={city},{country}')
 
         weather_data = url.json()
-
+        icon = weather_data['weather'][0]['icon']
+        city = weather_data['name']
+        description = weather_data['weather'][0]['description']
         temperature = round(weather_data['main']['temp'])
         humidity = weather_data['main']['humidity']
-        feels = weather_data['main']['feels_like']
+        feels = round(weather_data['main']['feels_like'])
         clouds = weather_data['clouds']['all']
         speed = weather_data['wind']['speed']
 
-        return render_template("weather.html", temperature=temperature, humidity=humidity, speed=speed, feels=feels, clouds=clouds)
+        return render_template("weather.html", city=city, description=description, icon=icon, temperature=temperature, humidity=humidity, speed=speed, feels=feels, clouds=clouds)
     return render_template("weather.html")
 
 

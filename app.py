@@ -1,3 +1,4 @@
+import configparser
 import os
 from flask import Flask, render_template, flash, redirect, request, session, url_for
 import gunicorn
@@ -16,9 +17,18 @@ import requests
 import applications.apod
 import applications.NeoWs.asteroids
 import applications.epic
+from requests import get
 
+# Nasa's API key and url
 response = applications.apod.get_data(
     'DEMO_KEY')
+
+
+# def get_api_key():
+#     # Openweathermap's API
+#     config = configparser.ConfigParser()
+#     config.read('config.ini')
+#     return config['openweathermap']['weather_api']
 
 
 app = Flask(__name__)
@@ -202,6 +212,30 @@ def weather():
 
         return render_template("weather.html", city=city, description=description, icon=icon, temperature=temperature, humidity=humidity, speed=speed, feels=feels, clouds=clouds)
     return render_template("weather.html")
+
+
+@app.route("/forecast_week", methods=["GET", "POST"])
+def forecast_week():
+
+    if request.method == "POST":
+        api_key = os.environ.get("WEATHER_KEY")
+        lat = get('https://ipapi.co/latitude/')
+        lon = get('https://ipapi.co/longitude/')
+        url = requests.get(
+            f'https://api.openweathermap.org/data/2.5/onecall?appid={api_key}&units=imperial&lat={lat}&lon={lon}')
+
+        weather_data = url.json()
+        icon = weather_data['current']['weather'][0]['icon']
+        timezone = weather_data['timezone']
+        description = weather_data['current']['weather'][0]['description']
+        temperature = round(weather_data['current']['temp'])
+        humidity = weather_data['current']['humidity']
+        feels = round(weather_data['current']['feels_like'])
+        clouds = weather_data['current']['clouds']
+        speed = weather_data['current']['wind_speed']
+
+        return render_template("forecast_week.html", timezone=timezone, description=description, icon=icon, temperature=temperature, humidity=humidity, speed=speed, feels=feels, clouds=clouds)
+    return render_template("forecast_week.html")
 
 
 @app.route("/register", methods=["GET", "POST"])

@@ -18,6 +18,7 @@ import applications.apod
 import applications.NeoWs.asteroids
 import applications.epic
 import applications.geolocation
+import applications.weather
 
 # Nasa's API key and url
 response = applications.apod.get_data(
@@ -219,25 +220,10 @@ def weather():
 
 @app.route("/forecast_week", methods=["GET", "POST"])
 def forecast_week():
-
     if request.method == "POST":
-        api_key = os.environ.get('API_KEY')
-        lat = applications.geolocation.get_lat(response)
-        lon = applications.geolocation.get_lon(response)
-        url = requests.get(
-            f'https://api.openweathermap.org/data/2.5/onecall?appid={api_key}&units=imperial&lat={lat}&lon={lon}')
+        latlon = applications.weather.get_weather(response)
 
-        weather_data = url.json()
-        icon = weather_data['current']['weather'][0]['icon']
-        timezone = weather_data['timezone']
-        description = weather_data['current']['weather'][0]['description']
-        temperature = round(weather_data['current']['temp'])
-        humidity = weather_data['current']['humidity']
-        feels = round(weather_data['current']['feels_like'])
-        clouds = weather_data['current']['clouds']
-        speed = weather_data['current']['wind_speed']
-
-        return render_template("forecast_week.html", timezone=timezone, description=description, icon=icon, temperature=temperature, humidity=humidity, speed=speed, feels=feels, clouds=clouds)
+        return render_template("forecast_week.html", latlon=latlon)
     return render_template("forecast_week.html")
 
 

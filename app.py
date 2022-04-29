@@ -17,12 +17,13 @@ import requests
 import applications.apod
 import applications.NeoWs.asteroids
 import applications.epic
-from requests import get
+import applications.geolocation
 
 # Nasa's API key and url
 response = applications.apod.get_data(
     'DEMO_KEY')
 
+response = applications.geolocation.get_data()
 
 # def get_api_key():
 #     # Openweathermap's API
@@ -59,8 +60,8 @@ def load_user(user_id):
 
 
 # Make sure API key is set
-if not os.environ.get("WEATHER_KEY"):
-    raise RuntimeError("WEATHER_KEY not set")
+if not os.environ.get("API_KEY"):
+    raise RuntimeError("API_KEY not set")
 
 
 class User(db.Model, UserMixin):
@@ -196,7 +197,9 @@ def weather():
     if request.method == "POST":
         city = request.form['city']
         country = request.form['country']
-        api_key = os.environ.get("WEATHER_KEY")
+        api_key = os.environ.get("API_KEY")
+        lat = applications.geolocation.get_lat(response)
+        lon = applications.geolocation.get_lon(response)
         url = requests.get(
             f'https://api.openweathermap.org/data/2.5/weather?appid={api_key}&units=imperial&q={city},{country}')
 
@@ -218,9 +221,9 @@ def weather():
 def forecast_week():
 
     if request.method == "POST":
-        api_key = os.environ.get("WEATHER_KEY")
-        lat = get('https://ipapi.co/latitude/')
-        lon = get('https://ipapi.co/longitude/')
+        api_key = os.environ.get('API_KEY')
+        lat = applications.geolocation.get_lat(response)
+        lon = applications.geolocation.get_lon(response)
         url = requests.get(
             f'https://api.openweathermap.org/data/2.5/onecall?appid={api_key}&units=imperial&lat={lat}&lon={lon}')
 

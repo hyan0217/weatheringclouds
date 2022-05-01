@@ -13,6 +13,6 @@ def get_lat(response):
     return lat
 
 
-def get_lat(response):
+def get_lon(response):
     lon = response['longitude']
     return lon

@@ -24,7 +24,12 @@ import applications.weather
 response = applications.apod.get_data(
     'DEMO_KEY')
 
-response = applications.geolocation.get_data()
+weather_current_data = applications.weather.get_current_weather(
+    os.environ.get("API_KEY"))
+
+weather_daily_data = applications.weather.get_daily_weather(
+    os.environ.get("API_KEY"))
+
 
 # def get_api_key():
 #     # Openweathermap's API
@@ -221,9 +226,21 @@ def weather():
 @app.route("/forecast_week", methods=["GET", "POST"])
 def forecast_week():
     if request.method == "POST":
-        latlon = applications.weather.get_weather(response)
+        temp = applications.weather.get_temp(weather_current_data)
+        feels = applications.weather.get_feel(weather_current_data)
+        humid = applications.weather.get_humid(weather_current_data)
+        uvi = applications.weather.get_uvi(weather_current_data)
+        clouds = applications.weather.get_clouds(weather_current_data)
+        speed = applications.weather.get_speed(weather_current_data)
+        time = applications.weather.get_time(weather_current_data)
+        desc = applications.weather.get_desc(weather_current_data)
+        icon = applications.weather.get_icon(weather_current_data)
+        daily_temp = applications.weather.get_daily_temp(weather_daily_data)
+        daily_icon = applications.weather.get_daily_icon(weather_daily_data)
+        daily_humid = applications.weather.get_daily_humid(
+            weather_daily_data)
 
-        return render_template("forecast_week.html", latlon=latlon)
+        return render_template("forecast_week.html", temp=temp, feels=feels, humid=humid, uvi=uvi, clouds=clouds, speed=speed, time=time, desc=desc, icon=icon, daily_temp=daily_temp, daily_humid=daily_humid, daily_icon=daily_icon)
     return render_template("forecast_week.html")
 
 

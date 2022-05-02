@@ -19,7 +19,7 @@ def get_daily_weather(api_key):
     lat = applications.geolocation.get_lat(response)
     lon = applications.geolocation.get_lon(response)
     raw_response = requests.get(
-        f'https://api.openweathermap.org/data/2.5/onecall?appid={api_key}&exclude=minutely&units=imperial&lat={lat}&lon={lon}').text
+        f'https://api.openweathermap.org/data/2.5/onecall?appid={api_key}&exclude=current,minutely,hourly,alerts&units=imperial&lat={lat}&lon={lon}').text
     weather_daily_data = json.loads(raw_response)
     return weather_daily_data
 
@@ -70,15 +70,15 @@ def get_icon(weather_current_data):
 
 
 def get_daily_temp(weather_daily_data):
-    daily_temp = weather_daily_data['daily'][0]['temp']
+    daily_temp = weather_daily_data['daily'][1]['temp']
     return daily_temp
 
 
 def get_daily_icon(weather_daily_data):
-    daily_icon = weather_daily_data['daily']['weather'][0]['icon']
+    daily_icon = weather_daily_data['weather']['icon']
     return daily_icon
 
 
 def get_daily_humid(weather_daily_data):
-    daily_humid = round(weather_daily_data['daily']['humidity'])
+    daily_humid = round(weather_daily_data['daily'][1]['humidity'])
     return daily_humid

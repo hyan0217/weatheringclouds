@@ -236,11 +236,12 @@ def forecast_week():
         desc = applications.weather.get_desc(weather_current_data)
         icon = applications.weather.get_icon(weather_current_data)
         daily_temp = applications.weather.get_daily_temp(weather_daily_data)
+        daily_desc = applications.weather.get_daily_desc(weather_daily_data)
         daily_icon = applications.weather.get_daily_icon(weather_daily_data)
         daily_humid = applications.weather.get_daily_humid(
             weather_daily_data)
 
-        return render_template("forecast_week.html", temp=temp, feels=feels, humid=humid, uvi=uvi, clouds=clouds, speed=speed, time=time, desc=desc, icon=icon, daily_temp=daily_temp, daily_humid=daily_humid, daily_icon=daily_icon)
+        return render_template("forecast_week.html", temp=temp, feels=feels, humid=humid, uvi=uvi, clouds=clouds, speed=speed, time=time, desc=desc, icon=icon, daily_temp=daily_temp, daily_humid=daily_humid, daily_icon=daily_icon, daily_desc=daily_desc)
     return render_template("forecast_week.html")
 
 

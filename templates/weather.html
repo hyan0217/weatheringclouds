@@ -14,47 +14,126 @@
                     </form>
                 </div>
             </div>
-        <br/>
-        <div class="form-group">
-            <input type="text" class="form-control" name="city" placeholder="Enter Your City">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control" name="country" placeholder="Entire Your Country">
-        </div>         
+                        <br/>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="lat" placeholder="Enter Your City">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="lon" placeholder="Entire Your Country">
+                        </div>   
+                    </form>        
+                </div>
+            </div>
         </div>
         <div class="container h-100">
             <div class="row justify-content-center">
                 <div class="col-md-6 col-sm-12 col-xs-12 pt-5">
                     <div class="card border-0 p-3 shadow-sm text-center">
-                        <h2 class="text-muted">Current Weather For {{city}}</h2>
+                        <h2 class="text-muted"><b id="weather_title">Currently For</b> <b id="weather_title">{{time}}</b></h2>
                         <div class="row justify-content-center">
-                            <div class="col-md-6 col-sm-12 col-xs-12 pt-5">
-                                <img src="http://openweathermap.org/img/w/{{icon}}.png" alt="Weather Icon" width="30%">
-                                <h5 class="text-muted">{{description}}</h>
+                            <div class="col-md-6 col-sm-12 col-xs-12 pt-3">
+                                <div class="text-center">
+                                <img src="http://openweathermap.org/img/w/{{icon}}.png" alt="Weather Icon" width="30%" class="text-center">
+                                <h5 class="text-muted"><b>{{desc}}</b></h>
+                                </div>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-md-6 col-sm-12 col-xs-12 pt-5">
-                                <h5 class="lead text-muted">Temperature: {{temperature}}°</h5>
+                                <h5 class="lead text-muted"><b>Temperature:</b> {{temp}}°</h5>
                             </div>
                             <div class="col-md-6 col-sm-12 col-xs-12 pt-5">
-                                <h5 class="lead text-muted">Humidity: {{humidity}}%</h5>
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-md-6 col-sm-12 col-xs-12 pt-5">
-                                <h5 class="lead text-muted">Wind Speed: {{speed}} mph</h5>
-                            </div>
-                            <div class="col-md-6 col-sm-12 col-xs-12 pt-5">
-                                <h5 class="lead text-muted">Feels Like: {{feels}}°</h5>
+                                <h5 class="lead text-muted"><b>Humidity:</b> {{humid}}%</h5>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-md-6 col-sm-12 col-xs-12 pt-5">
-                                <h5 class="lead text-muted">Clouds are moving at: {{clouds}} mph</h5>
+                                <h5 class="lead text-muted"><b>Wind Speed:</b> {{speed}} mph</h5>
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-xs-12 pt-5">
+                                <h5 class="lead text-muted"><b>Feels Like:</b> {{feels}}°</h5>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-6 col-sm-12 col-xs-12 pt-5">
+                                <h5 class="lead text-muted"><b>Clouds are moving at:</b> {{clouds}} mph</h5>
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-xs-12 pt-5">
+                                <h5 class="lead text-muted"><b>Current UV Index:</b> {{uvi}}</h5>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-sm-12 col-xs-12 pt-5">
+                <div class="card border-0 p-3 shadow-sm text-center">
+                    <h2 class="text-muted"><b id="weather_title">Weekly Forecast</b> <b id="weather_title">{{time}}</b></h2>
+                    <div class="text-center">
+                    <img src="http://openweathermap.org/img/w/{{first_day_icon}}.png" alt="Weather Icon" width="30%" class="text-center">
+                    <h5 class="lead text-muted"><b>Today:</b></h5>
+                    <h5 class="lead text-muted">{{first_day}}</h5>
+                    <h5 class="lead text-muted"><b>{{first_day_desc}}</b></h5>
+                    </div>
+                    <h5 class="lead text-muted"><b>Day:</b> {{first_day_temp}}°</h5>
+                    <h5 class="lead text-muted"><b>Night:</b> {{first_night_temp}}°</h5>
+                    <h5 class="lead text-muted"><b>Humidity:</b> {{first_day_humidity}}%</h5>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 col-xs-12 pt-5">
+                <div class="card border-0 p-3 shadow-sm text-center">
+                    <h2 class="text-muted"><b id="weather_title">Weekly Forecast</b> <b id="weather_title">{{time}}</b></h2>
+                    <div class="text-center">
+                    <img src="http://openweathermap.org/img/w/{{second_day_icon}}.png" alt="Weather Icon" width="30%" class="text-center">
+                    <h5 class="lead text-muted"><b>Tomorrow:</b></h5>
+                    <h5 class="lead text-muted"><b>{{second_day}}</b></h5>
+                    <h5 class="lead text-muted"><b>{{second_day_desc}}</b><h5>
+                    </div>
+                    <h5 class="lead text-muted"><b>Day:</b> {{second_max_temp}}°</h5>
+                    <h5 class="lead text-muted"><b>Night:</b> {{second_min_temp}}°</h5>
+                    <h5 class="lead text-muted"><b>Humidity:</b> {{second_day_humidity}}%</h5>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 col-xs-12 pt-5">
+                <div class="card border-0 p-3 shadow-sm text-center">
+                    <h2 class="text-muted"><b id="weather_title">Weekly Forecast</b> <b id="weather_title">{{time}}</b></h2>
+                    <div class="text-center">
+                    <img src="http://openweathermap.org/img/w/{{third_day_icon}}.png" alt="Weather Icon" width="30%" class="text-center">
+                    <h5 class="lead text-muted"><b>{{third_day}}</b></h5>
+                    <h5 class="lead text-muted"><b>{{third_day_desc}}</b></h5>
+                    </div>
+                    <h5 class="lead text-muted"><b>Day:</b> {{third_max_temp}}°</h5>
+                    <h5 class="lead text-muted"><b>Night:</b> {{third_min_temp}}°</h5>
+                    <h5 class="lead text-muted"><b>Humidity:</b> {{third_day_humidity}}%</h5>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 col-xs-12 pt-5">
+                <div class="card border-0 p-3 shadow-sm text-center">
+                    <h2 class="text-muted"><b id="weather_title">Weekly Forecast</b> <b id="weather_title">{{time}}</b></h2>
+                    <div class="text-center">
+                    <img src="http://openweathermap.org/img/w/{{fourth_day_icon}}.png" alt="Weather Icon" width="30%" class="text-center">
+                    <h5 class="lead text-muted"><b>{{fourth_day}}</b></h5>
+                    <h5 class="lead text-muted"><b>{{fourth_day_desc}}</b></h5>
+                    </div>
+                    <h5 class="lead text-muted"><b>Day:</b> {{fourth_max_temp}}°</h5>
+                    <h5 class="lead text-muted"><b>Night:</b> {{fourth_min_temp}}°</h5>
+                    <h5 class="lead text-muted"><b>Humidity:</b> {{fourth_day_humidity}}%</h5>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 col-xs-12 pt-5">
+                <div class="card border-0 p-3 shadow-sm text-center">
+                    <h2 class="text-muted"><b id="weather_title">Weekly Forecast</b> <b id="weather_title">{{time}}</b></h2>
+                    <div class="text-center">
+                    <img src="http://openweathermap.org/img/w/{{fifth_day_icon}}.png" alt="Weather Icon" width="30%" class="text-center">
+                    <h5 class="lead text-muted"><b>{{fifth_day}}</b></h5>
+                    <h5 class="lead text-muted"><b>{{fifth_day_desc}}</b></h5>
+                    </div>
+                    <h5 class="lead text-muted"><b>Day:</b> {{fifth_max_temp}}°</h5>
+                    <h5 class="lead text-muted"><b>Night:</b> {{fifth_min_temp}}°</h5>
+                    <h5 class="lead text-muted"><b>Humidity:</b> {{fifth_day_humidity}}%</h5>
                 </div>
             </div>
         </div>

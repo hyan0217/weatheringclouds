@@ -1,4 +1,3 @@
-import configparser
 import os
 from flask import Flask, render_template, flash, redirect, request, session, url_for
 import gunicorn
@@ -17,13 +16,19 @@ import requests
 import applications.apod
 import applications.NeoWs.asteroids
 import applications.epic
+import applications.weather
 import applications.geolocation
 
 # Nasa's API key and url
 response = applications.apod.get_data(
     'DEMO_KEY')
 
-response = applications.geolocation.get_data()
+weather_current_data = applications.weather.get_current_weather(
+    os.environ.get("API_KEY"))
+
+weather_daily_data = applications.weather.get_daily_weather(
+    os.environ.get("API_KEY"))
+
 
 # def get_api_key():
 #     # Openweathermap's API
@@ -193,52 +198,79 @@ def epic():
 
 @app.route("/weather", methods=["GET", "POST"])
 def weather():
-
     if request.method == "POST":
-        city = request.form['city']
-        country = request.form['country']
-        api_key = os.environ.get("API_KEY")
-        lat = applications.geolocation.get_lat(response)
-        lon = applications.geolocation.get_lon(response)
-        url = requests.get(
-            f'https://api.openweathermap.org/data/2.5/weather?appid={api_key}&units=imperial&q={city},{country}')
+        temp = applications.weather.get_temp(weather_current_data)
+        feels = applications.weather.get_feel(weather_current_data)
+        humid = applications.weather.get_humid(weather_current_data)
+        uvi = applications.weather.get_uvi(weather_current_data)
+        clouds = applications.weather.get_clouds(weather_current_data)
+        speed = applications.weather.get_speed(weather_current_data)
+        time = applications.weather.get_time(weather_current_data)
+        desc = applications.weather.get_desc(weather_current_data)
+        icon = applications.weather.get_icon(weather_current_data)
+        first_day = applications.weather.day_one(weather_daily_data)
+        first_day_temp = applications.weather.today_day_temp(
+            weather_daily_data)
+        first_night_temp = applications.weather.today_night_temp(
+            weather_daily_data)
+        first_day_icon = applications.weather.today_icon(weather_daily_data)
+        first_day_desc = applications.weather.today_desc(weather_daily_data)
+        first_day_humidity = applications.weather.today_humidity(
+            weather_daily_data)
+        second_day = applications.weather.day_two(weather_daily_data)
+        second_day_icon = applications.weather.day_two_icon(weather_daily_data)
+        second_day_desc = applications.weather.day_two_desc(weather_daily_data)
+        second_max_temp = applications.weather.day_two_max_temp(
+            weather_daily_data)
+        second_min_temp = applications.weather.day_two_min_temp(
+            weather_daily_data)
+        second_day_humidity = applications.weather.day_two_humidity(
+            weather_daily_data)
+        third_day = applications.weather.day_three(weather_daily_data)
+        third_day_icon = applications.weather.day_three_icon(
+            weather_daily_data)
+        third_day_desc = applications.weather.day_three_desc(
+            weather_daily_data)
+        third_max_temp = applications.weather.day_three_max_temp(
+            weather_daily_data)
+        third_min_temp = applications.weather.day_three_min_temp(
+            weather_daily_data)
+        third_day_humidity = applications.weather.day_three_humidity(
+            weather_daily_data)
+        fourth_day = applications.weather.day_four(weather_daily_data)
+        fourth_day_icon = applications.weather.day_four_icon(
+            weather_daily_data)
+        fourth_day_desc = applications.weather.day_four_desc(
+            weather_daily_data)
+        fourth_max_temp = applications.weather.day_four_max_temp(
+            weather_daily_data)
+        fourth_min_temp = applications.weather.day_four_min_temp(
+            weather_daily_data)
+        fourth_day_humidity = applications.weather.day_four_humidity(
+            weather_daily_data)
+        fifth_day = applications.weather.day_five(weather_daily_data)
+        fifth_day_icon = applications.weather.day_five_icon(
+            weather_daily_data)
+        fifth_day_desc = applications.weather.day_five_desc(
+            weather_daily_data)
+        fifth_max_temp = applications.weather.day_five_max_temp(
+            weather_daily_data)
+        fifth_min_temp = applications.weather.day_five_min_temp(
+            weather_daily_data)
+        fifth_day_humidity = applications.weather.day_five_humidity(
+            weather_daily_data)
 
-        weather_data = url.json()
-        icon = weather_data['weather'][0]['icon']
-        city = weather_data['name']
-        description = weather_data['weather'][0]['description']
-        temperature = round(weather_data['main']['temp'])
-        humidity = weather_data['main']['humidity']
-        feels = round(weather_data['main']['feels_like'])
-        clouds = weather_data['clouds']['all']
-        speed = weather_data['wind']['speed']
-
-        return render_template("weather.html", city=city, description=description, icon=icon, temperature=temperature, humidity=humidity, speed=speed, feels=feels, clouds=clouds)
+        return render_template("weather.html", temp=temp, feels=feels, humid=humid, uvi=uvi, clouds=clouds, speed=speed,
+                               time=time, desc=desc, icon=icon, first_day=first_day, first_day_temp=first_day_temp, first_night_temp=first_night_temp,
+                               first_day_humidity=first_day_humidity, first_day_desc=first_day_desc, first_day_icon=first_day_icon,
+                               second_day=second_day, second_day_desc=second_day_desc, second_day_icon=second_day_icon,
+                               second_max_temp=second_max_temp, second_day_humidity=second_day_humidity, third_day_icon=third_day_icon,
+                               third_day_desc=third_day_desc, second_min_temp=second_min_temp, third_day=third_day,
+                               third_max_temp=third_max_temp, third_min_temp=third_min_temp, third_day_humidity=third_day_humidity,
+                               fourth_day=fourth_day, fourth_day_icon=fourth_day_icon, fourth_day_desc=fourth_day_desc, fourth_max_temp=fourth_max_temp,
+                               fourth_min_temp=fourth_min_temp, fourth_day_humidity=fourth_day_humidity, fifth_day=fifth_day, fifth_day_icon=fifth_day_icon,
+                               fifth_day_desc=fifth_day_desc, fifth_max_temp=fifth_max_temp, fifth_min_temp=fifth_min_temp, fifth_day_humidity=fifth_day_humidity)
     return render_template("weather.html")
-
-
-@app.route("/forecast_week", methods=["GET", "POST"])
-def forecast_week():
-
-    if request.method == "POST":
-        api_key = os.environ.get('API_KEY')
-        lat = applications.geolocation.get_lat(response)
-        lon = applications.geolocation.get_lon(response)
-        url = requests.get(
-            f'https://api.openweathermap.org/data/2.5/onecall?appid={api_key}&units=imperial&lat={lat}&lon={lon}')
-
-        weather_data = url.json()
-        icon = weather_data['current']['weather'][0]['icon']
-        timezone = weather_data['timezone']
-        description = weather_data['current']['weather'][0]['description']
-        temperature = round(weather_data['current']['temp'])
-        humidity = weather_data['current']['humidity']
-        feels = round(weather_data['current']['feels_like'])
-        clouds = weather_data['current']['clouds']
-        speed = weather_data['current']['wind_speed']
-
-        return render_template("forecast_week.html", timezone=timezone, description=description, icon=icon, temperature=temperature, humidity=humidity, speed=speed, feels=feels, clouds=clouds)
-    return render_template("forecast_week.html")
 
 
 @app.route("/register", methods=["GET", "POST"])

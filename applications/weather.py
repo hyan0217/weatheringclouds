@@ -7,7 +7,7 @@ import applications.geolocation
 
 response = applications.geolocation.get_data()
 
-# geolocator = Nominatim(user_agent="weather")
+geolocator = Nominatim(user_agent="weather")
 
 
 def get_current_weather(api_key):

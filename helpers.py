@@ -6,18 +6,13 @@ from applications import geolocation
 response = geolocation.get_data()
 
 
-def get_data():
+def get_location(api_key):
     lat = geolocation.get_lat(response)
     lon = geolocation.get_lon(response)
     raw_response = requests.get(
-        f'https://api.openweathermap.org/data/2.5/onecall?appid={api_key}&exclude=current,minutely,hourly,alerts&units=imperial&lat={lat}&lon={lon}').text
-    weather_current_data = json.loads(raw_response)
-    return weather_current_data
+        f'http://api.openweathermap.org/geo/1.0/reverse?lat={lat}&lon={lon}&limit=5&appid={api_key}').text
+    location_area = json.loads(raw_response)
+    return location_area
 
 
-def get_daily_temp(weather_current_data):
-    daily_temp = response['daily']['temp']
-    return daily_temp
-
-
-print(get_daily_temp)
+get_location()

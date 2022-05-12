@@ -1,4 +1,3 @@
-from geopy.geocoders import Nominatim
 import requests
 import os
 import json
@@ -7,7 +6,14 @@ import applications.geolocation
 
 response = applications.geolocation.get_data()
 
-# geolocator = Nominatim(user_agent="weather")
+
+def get_location(api_key):
+    lat = applications.geolocation.get_lat(response)
+    lon = applications.geolocation.get_lon(response)
+    raw_response = requests.get(
+        f'http://api.openweathermap.org/geo/1.0/reverse?lat={lat}&lon={lon}&limit=5&appid={api_key}').text
+    location_area = json.loads(raw_response)
+    return location_area
 
 
 def get_current_weather(api_key):
@@ -28,6 +34,11 @@ def get_daily_weather(api_key):
     return weather_daily_data
 
 # Current Weather Forecast
+
+
+def get_location(location_area):
+    cur_location = location_area['name']
+    return cur_location
 
 
 def get_temp(weather_current_data):
@@ -58,11 +69,6 @@ def get_clouds(weather_current_data):
 def get_speed(weather_current_data):
     speed = weather_current_data['current']['wind_speed']
     return speed
-
-
-def get_time(weather_current_data):
-    timezone = weather_current_data['timezone']
-    return timezone
 
 
 def get_desc(weather_current_data):

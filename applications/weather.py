@@ -25,6 +25,13 @@ def get_current_weather(api_key):
     return weather_current_data
 
 
+# def get_city(api_key):
+#     raw_response = requests.get(
+#         f'http://api.openweathermap.org/geo/1.0/direct?q={city},{country}&appid={api_key}').text
+#     city_location = json.loads(raw_response)
+#     return city_location
+
+
 def get_daily_weather(api_key):
     lat = applications.geolocation.get_lat(response)
     lon = applications.geolocation.get_lon(response)
@@ -33,7 +40,21 @@ def get_daily_weather(api_key):
     weather_daily_data = json.loads(raw_response)
     return weather_daily_data
 
+
+def get_location(api_key):
+    lat = applications.geolocation.get_lat(response)
+    lon = applications.geolocation.get_lon(response)
+    raw_response = requests.get(
+        f'http://api.openweathermap.org/geo/1.0/reverse?appid={api_key}&limit=5&lat={lat}&lon={lon}').text
+    cur_location = json.loads(raw_response)
+    return cur_location
+
+
 # Current Weather Forecast
+
+def get_loc(cur_location):
+    location = cur_location[0]['name']
+    return location
 
 
 def get_location(location_area):
@@ -86,8 +107,7 @@ def get_icon(weather_current_data):
 def day_one(weather_daily_data):
     timestamp = weather_daily_data['daily'][0]['dt']
     date_time = datetime.fromtimestamp(timestamp)
-    first_day = date_time.strftime(
-        '%A' + ' ' + '%b %d')
+    first_day = date_time.strftime('%b %d')
     return first_day
 
 
@@ -121,8 +141,7 @@ def today_humidity(weather_daily_data):
 def day_two(weather_daily_data):
     timestamp = weather_daily_data['daily'][1]['dt']
     date_time = datetime.fromtimestamp(timestamp)
-    second_day = date_time.strftime(
-        '%A' + ' ' + '%b %d')
+    second_day = date_time.strftime('%b %d')
     return second_day
 
 

@@ -84,8 +84,13 @@ a.article-title:hover {
   font-size: 2.5rem;
 }
 
-#weather_text {
-  color: blueviolet;
+#weather_txt {
+  width: 15em;
+  height: 25em;
+}
+
+#weather_container {
+  height: 20em;
 }
 
 #weather_title {

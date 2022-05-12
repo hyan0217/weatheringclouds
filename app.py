@@ -29,7 +29,7 @@ weather_current_data = applications.weather.get_current_weather(
 weather_daily_data = applications.weather.get_daily_weather(
     os.environ.get("API_KEY"))
 
-location_area = applications.weather.get_location(
+cur_location = applications.weather.get_location(
     os.environ.get("API_KEY"))
 
 
@@ -213,7 +213,7 @@ def weather():
         uvi = applications.weather.get_uvi(weather_current_data)
         clouds = applications.weather.get_clouds(weather_current_data)
         speed = applications.weather.get_speed(weather_current_data)
-        cur_location = applications.weather.get_location(location_area)
+        location = applications.weather.get_loc(cur_location)
         desc = applications.weather.get_desc(weather_current_data)
         icon = applications.weather.get_icon(weather_current_data)
         first_day = applications.weather.day_one(weather_daily_data)
@@ -269,7 +269,7 @@ def weather():
             weather_daily_data)
 
         return render_template("weather.html", temp=temp, feels=feels, humid=humid, uvi=uvi, clouds=clouds, speed=speed,
-                               cur_location=cur_location, desc=desc, icon=icon, first_day=first_day, first_day_temp=first_day_temp, first_night_temp=first_night_temp,
+                               location=location, desc=desc, icon=icon, first_day=first_day, first_day_temp=first_day_temp, first_night_temp=first_night_temp,
                                first_day_humidity=first_day_humidity, first_day_desc=first_day_desc, first_day_icon=first_day_icon,
                                second_day=second_day, second_day_desc=second_day_desc, second_day_icon=second_day_icon,
                                second_max_temp=second_max_temp, second_day_humidity=second_day_humidity, third_day_icon=third_day_icon,

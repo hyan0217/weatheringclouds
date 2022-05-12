@@ -7,15 +7,6 @@ import applications.geolocation
 response = applications.geolocation.get_data()
 
 
-def get_location(api_key):
-    lat = applications.geolocation.get_lat(response)
-    lon = applications.geolocation.get_lon(response)
-    raw_response = requests.get(
-        f'http://api.openweathermap.org/geo/1.0/reverse?lat={lat}&lon={lon}&limit=5&appid={api_key}').text
-    location_area = json.loads(raw_response)
-    return location_area
-
-
 def get_current_weather(api_key):
     lat = applications.geolocation.get_lat(response)
     lon = applications.geolocation.get_lon(response)
@@ -55,11 +46,6 @@ def get_location(api_key):
 def get_loc(cur_location):
     location = cur_location[0]['name']
     return location
-
-
-def get_location(location_area):
-    cur_location = location_area['name']
-    return cur_location
 
 
 def get_temp(weather_current_data):

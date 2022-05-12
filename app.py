@@ -29,6 +29,9 @@ weather_current_data = applications.weather.get_current_weather(
 weather_daily_data = applications.weather.get_daily_weather(
     os.environ.get("API_KEY"))
 
+cur_location = applications.weather.get_location(
+    os.environ.get("API_KEY"))
+
 
 # def get_api_key():
 #     # Openweathermap's API
@@ -162,6 +165,12 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField('Reset Password')
 
 
+class SearchWeatherForm(FlaskForm):
+    city = StringField('Name of City', validators=[DataRequired()])
+    country = StringField('Enter Country', validators=[DataRequired()])
+    submit = SubmitField('Search')
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
 
@@ -198,6 +207,12 @@ def epic():
 
 @app.route("/weather", methods=["GET", "POST"])
 def weather():
+    form = SearchWeatherForm()
+    if form.validate_on_submit():
+        if request.method == "POST":
+            city = form.city.data
+            country = form.country.data
+
     if request.method == "POST":
         temp = applications.weather.get_temp(weather_current_data)
         feels = applications.weather.get_feel(weather_current_data)
@@ -205,7 +220,7 @@ def weather():
         uvi = applications.weather.get_uvi(weather_current_data)
         clouds = applications.weather.get_clouds(weather_current_data)
         speed = applications.weather.get_speed(weather_current_data)
-        time = applications.weather.get_time(weather_current_data)
+        location = applications.weather.get_loc(cur_location)
         desc = applications.weather.get_desc(weather_current_data)
         icon = applications.weather.get_icon(weather_current_data)
         first_day = applications.weather.day_one(weather_daily_data)
@@ -261,7 +276,7 @@ def weather():
             weather_daily_data)
 
         return render_template("weather.html", temp=temp, feels=feels, humid=humid, uvi=uvi, clouds=clouds, speed=speed,
-                               time=time, desc=desc, icon=icon, first_day=first_day, first_day_temp=first_day_temp, first_night_temp=first_night_temp,
+                               location=location, desc=desc, icon=icon, first_day=first_day, first_day_temp=first_day_temp, first_night_temp=first_night_temp,
                                first_day_humidity=first_day_humidity, first_day_desc=first_day_desc, first_day_icon=first_day_icon,
                                second_day=second_day, second_day_desc=second_day_desc, second_day_icon=second_day_icon,
                                second_max_temp=second_max_temp, second_day_humidity=second_day_humidity, third_day_icon=third_day_icon,
@@ -269,7 +284,8 @@ def weather():
                                third_max_temp=third_max_temp, third_min_temp=third_min_temp, third_day_humidity=third_day_humidity,
                                fourth_day=fourth_day, fourth_day_icon=fourth_day_icon, fourth_day_desc=fourth_day_desc, fourth_max_temp=fourth_max_temp,
                                fourth_min_temp=fourth_min_temp, fourth_day_humidity=fourth_day_humidity, fifth_day=fifth_day, fifth_day_icon=fifth_day_icon,
-                               fifth_day_desc=fifth_day_desc, fifth_max_temp=fifth_max_temp, fifth_min_temp=fifth_min_temp, fifth_day_humidity=fifth_day_humidity)
+                               fifth_day_desc=fifth_day_desc, fifth_max_temp=fifth_max_temp, fifth_min_temp=fifth_min_temp, fifth_day_humidity=fifth_day_humidity,
+                               form=form, city=city, country=country)
     return render_template("weather.html")
 
 

@@ -36,9 +36,14 @@ def get_location(api_key):
 
 # Current Weather Forecast
 
-def get_loc(cur_location):
-    location = cur_location[0]['name']
-    return location
+def get_city(cur_location):
+    city = cur_location[0]['name']
+    return city
+
+
+def get_country(cur_location):
+    country = cur_location[0]['country']
+    return country
 
 
 def get_temp(weather_current_data):
@@ -246,3 +251,69 @@ def day_five_min_temp(weather_daily_data):
 def day_five_humidity(weather_daily_data):
     fifth_day_humidity = weather_daily_data['daily'][4]['humidity']
     return fifth_day_humidity
+
+
+def day_six(weather_daily_data):
+    timestamp = weather_daily_data['daily'][5]['dt']
+    date_time = datetime.fromtimestamp(timestamp)
+    sixth_day = date_time.strftime(
+        '%A' + ' ' + '%b %d')
+    return sixth_day
+
+
+def day_six_icon(weather_daily_data):
+    sixth_day_icon = weather_daily_data['daily'][5]['weather'][0]['icon']
+    return sixth_day_icon
+
+
+def day_six_desc(weather_daily_data):
+    sixth_day_desc = weather_daily_data['daily'][5]['weather'][0]['description']
+    return sixth_day_desc
+
+
+def day_six_max_temp(weather_daily_data):
+    sixth_max_temp = round(weather_daily_data['daily'][5]['temp']['max'])
+    return sixth_max_temp
+
+
+def day_six_min_temp(weather_daily_data):
+    sixth_min_temp = round(weather_daily_data['daily'][5]['temp']['min'])
+    return sixth_min_temp
+
+
+def day_six_humidity(weather_daily_data):
+    sixth_day_humidity = weather_daily_data['daily'][5]['humidity']
+    return sixth_day_humidity
+
+
+def day_seven(weather_daily_data):
+    timestamp = weather_daily_data['daily'][6]['dt']
+    date_time = datetime.fromtimestamp(timestamp)
+    seventh_day = date_time.strftime(
+        '%A' + ' ' + '%b %d')
+    return seventh_day
+
+
+def day_seven_icon(weather_daily_data):
+    seventh_day_icon = weather_daily_data['daily'][6]['weather'][0]['icon']
+    return seventh_day_icon
+
+
+def day_seven_desc(weather_daily_data):
+    seventh_day_desc = weather_daily_data['daily'][6]['weather'][0]['description']
+    return seventh_day_desc
+
+
+def day_seven_max_temp(weather_daily_data):
+    seventh_max_temp = round(weather_daily_data['daily'][6]['temp']['max'])
+    return seventh_max_temp
+
+
+def day_seven_min_temp(weather_daily_data):
+    seventh_min_temp = round(weather_daily_data['daily'][6]['temp']['min'])
+    return seventh_min_temp
+
+
+def day_seven_humidity(weather_daily_data):
+    seventh_day_humidity = weather_daily_data['daily'][6]['humidity']
+    return seventh_day_humidity

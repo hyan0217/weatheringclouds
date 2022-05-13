@@ -1,5 +1,4 @@
 import requests
-import webbrowser
 import json
 
 

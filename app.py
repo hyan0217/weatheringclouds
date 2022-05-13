@@ -9,13 +9,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, current_user,  logout_user, login_required
 from flask_migrate import Migrate
-from datetime import datetime
 import secrets
 from PIL import Image
-import requests
 import applications.apod
-import applications.NeoWs.asteroids
-import applications.epic
+import applications.apod_search
 import applications.weather
 import applications.geolocation
 
@@ -170,32 +167,9 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/apod", methods=["GET", "POST"])
-def apod():
-
-    dates = applications.apod.get_date(response)
-    explanation = applications.apod.get_explanation(response)
-    hdurl = applications.apod.get_hdurl(response)
-    title = applications.apod.get_title(response)
-
-    return render_template("apod.html", dates=dates, explanation=explanation, hdurl=hdurl, title=title)
-
-
-@app.route("/asteroids", methods=["GET", "POST"])
-def asteroids():
-
-    asteroids = applications.NeoWs.asteroids.Asteroids()
-
-    return render_template("asteroids.html", asteroids=asteroids)
-
-
-@app.route("/epic", methods=["GET", "POST"])
-def epic():
-
-    image = applications.epic.get_data(response)
-    date = applications.epic.get_date(response)
-
-    return render_template("epic.html", image=image, date=date)
+@app.route("/apod_search", methods=["GET", "POST"])
+def apod_search():
+    return render_template("apod_search.html")
 
 
 @app.route("/weather", methods=["GET", "POST"])
@@ -209,7 +183,8 @@ def weather():
         uvi = applications.weather.get_uvi(weather_current_data)
         clouds = applications.weather.get_clouds(weather_current_data)
         speed = applications.weather.get_speed(weather_current_data)
-        location = applications.weather.get_loc(cur_location)
+        city = applications.weather.get_city(cur_location)
+        country = applications.weather.get_country(cur_location)
         desc = applications.weather.get_desc(weather_current_data)
         icon = applications.weather.get_icon(weather_current_data)
         first_day = applications.weather.day_one(weather_daily_data)
@@ -263,9 +238,31 @@ def weather():
             weather_daily_data)
         fifth_day_humidity = applications.weather.day_five_humidity(
             weather_daily_data)
+        sixth_day = applications.weather.day_six(weather_daily_data)
+        sixth_day_icon = applications.weather.day_six_icon(
+            weather_daily_data)
+        sixth_day_desc = applications.weather.day_six_desc(
+            weather_daily_data)
+        sixth_max_temp = applications.weather.day_six_max_temp(
+            weather_daily_data)
+        sixth_min_temp = applications.weather.day_six_min_temp(
+            weather_daily_data)
+        sixth_day_humidity = applications.weather.day_six_humidity(
+            weather_daily_data)
+        seventh_day = applications.weather.day_seven(weather_daily_data)
+        seventh_day_icon = applications.weather.day_seven_icon(
+            weather_daily_data)
+        seventh_day_desc = applications.weather.day_seven_desc(
+            weather_daily_data)
+        seventh_max_temp = applications.weather.day_seven_max_temp(
+            weather_daily_data)
+        seventh_min_temp = applications.weather.day_seven_min_temp(
+            weather_daily_data)
+        seventh_day_humidity = applications.weather.day_seven_humidity(
+            weather_daily_data)
 
         return render_template("weather.html", temp=temp, feels=feels, humid=humid, uvi=uvi, clouds=clouds, speed=speed,
-                               location=location, desc=desc, icon=icon, first_day=first_day, first_day_temp=first_day_temp, first_night_temp=first_night_temp,
+                               city=city, country=country, desc=desc, icon=icon, first_day=first_day, first_day_temp=first_day_temp, first_night_temp=first_night_temp,
                                first_day_humidity=first_day_humidity, first_day_desc=first_day_desc, first_day_icon=first_day_icon,
                                second_day=second_day, second_day_desc=second_day_desc, second_day_icon=second_day_icon,
                                second_max_temp=second_max_temp, second_day_humidity=second_day_humidity, third_day_icon=third_day_icon,
@@ -273,7 +270,10 @@ def weather():
                                third_max_temp=third_max_temp, third_min_temp=third_min_temp, third_day_humidity=third_day_humidity,
                                fourth_day=fourth_day, fourth_day_icon=fourth_day_icon, fourth_day_desc=fourth_day_desc, fourth_max_temp=fourth_max_temp,
                                fourth_min_temp=fourth_min_temp, fourth_day_humidity=fourth_day_humidity, fifth_day=fifth_day, fifth_day_icon=fifth_day_icon,
-                               fifth_day_desc=fifth_day_desc, fifth_max_temp=fifth_max_temp, fifth_min_temp=fifth_min_temp, fifth_day_humidity=fifth_day_humidity)
+                               fifth_day_desc=fifth_day_desc, fifth_max_temp=fifth_max_temp, fifth_min_temp=fifth_min_temp, fifth_day_humidity=fifth_day_humidity,
+                               sixth_day=sixth_day, sixth_day_icon=sixth_day_icon, sixth_day_desc=sixth_day_desc, sixth_max_temp=sixth_max_temp, sixth_min_temp=sixth_min_temp,
+                               sixth_day_humidity=sixth_day_humidity, seventh_day=seventh_day, seventh_day_icon=seventh_day_icon,
+                               seventh_day_desc=seventh_day_desc, seventh_max_temp=seventh_max_temp, seventh_min_temp=seventh_min_temp, seventh_day_humidity=seventh_day_humidity)
     return render_template("weather.html")
 
 

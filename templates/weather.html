@@ -1,25 +1,22 @@
 {% extends "layout.html" %} {% block content %}
-<h1 class="center-block">Weather</h1>
+<h1 class="center-block">The Weather App</h1>
+<h6>Powered by OpenWeatherMap</h6>
     <div class="title">
         <div class="container h-100">
-            <div class="row">
-                <div class="form-group">
-                        {{ form.submit(class="btn btn-info btn-block") }}
-                    </form>
-                </div>
-                <div class="col-md-2 col-sm-5 col-xs-5 pt-3">
-                    <form method="POST" class="card border-0 p-3 shadow-sm">
-                        <button class="btn btn-info btn-block">Use Location</button>
-                    </form>
+            <div class="row justify-content-center">
+                <div class="col-md-4 col-sm-12 col-xs-12 pt-5">
+                    <div class="card border-5 p-1 shadow-sm text-center">
+                        <h2 class="text-muted weather_title" id="weather_title">Check The Weather For Your current Location.</h2>
+                    </div>
                 </div>
             </div>
-                <br/>
-                <div class="form-group">
-                    {{form.city(class="form-control")}}
+            <div class="row justify-content-center">
+                <div class="col-md-3 col-sm-12 col-xs-12 pt-2">
+                    <form method="POST" class="card border-0 p-3 shadow-sm">
+                        <button class="btn btn-info btn-block">Get Location</button>
+                    </form>
                 </div>
-                <div class="form-group">
-                    {{form.country(class="form-control")}}
-                </div>         
+            </div>     
         </div>
         <div class="container">
             <div class="row justify-content-center">

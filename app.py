@@ -200,12 +200,8 @@ def epic():
 
 @app.route("/weather", methods=["GET", "POST"])
 def weather():
-    form = SearchWeatherForm()
-    if form.validate_on_submit():
-        if request.method == "POST":
-            city = form.city.data
-            country = form.country.data
-
+    if current_user.is_authenticated:
+        return redirect("/weather")
     if request.method == "POST":
         temp = applications.weather.get_temp(weather_current_data)
         feels = applications.weather.get_feel(weather_current_data)
@@ -277,8 +273,7 @@ def weather():
                                third_max_temp=third_max_temp, third_min_temp=third_min_temp, third_day_humidity=third_day_humidity,
                                fourth_day=fourth_day, fourth_day_icon=fourth_day_icon, fourth_day_desc=fourth_day_desc, fourth_max_temp=fourth_max_temp,
                                fourth_min_temp=fourth_min_temp, fourth_day_humidity=fourth_day_humidity, fifth_day=fifth_day, fifth_day_icon=fifth_day_icon,
-                               fifth_day_desc=fifth_day_desc, fifth_max_temp=fifth_max_temp, fifth_min_temp=fifth_min_temp, fifth_day_humidity=fifth_day_humidity,
-                               form=form, city=city, country=country)
+                               fifth_day_desc=fifth_day_desc, fifth_max_temp=fifth_max_temp, fifth_min_temp=fifth_min_temp, fifth_day_humidity=fifth_day_humidity)
     return render_template("weather.html")
 
 

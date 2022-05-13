@@ -16,13 +16,6 @@ def get_current_weather(api_key):
     return weather_current_data
 
 
-# def get_city(api_key):
-#     raw_response = requests.get(
-#         f'http://api.openweathermap.org/geo/1.0/direct?q={city},{country}&appid={api_key}').text
-#     city_location = json.loads(raw_response)
-#     return city_location
-
-
 def get_daily_weather(api_key):
     lat = applications.geolocation.get_lat(response)
     lon = applications.geolocation.get_lon(response)

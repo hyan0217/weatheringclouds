@@ -161,6 +161,10 @@ class SearchWeatherForm(FlaskForm):
     submit = SubmitField('Search')
 
 
+class SearchForm(FlaskForm):
+    startdate
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
 

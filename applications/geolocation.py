@@ -1,6 +1,8 @@
 import requests
 import json
 
+# Uses Ipapi to grab users current location with latitude and longitude
+
 
 def get_data():
     raw_response = requests.get(f'https://ipapi.co/json/').text

@@ -10,16 +10,17 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, current_user,  logout_user, login_required
 from flask_migrate import Migrate
 import secrets
+from datetime import date
 from PIL import Image
 import applications.apod
-import applications.apod_search
 import applications.weather
 import applications.geolocation
 
-# Nasa's API key and url
+# Nasa's API key
 response = applications.apod.get_data(
     'DEMO_KEY')
 
+# OpenWeatherMap's API key
 weather_current_data = applications.weather.get_current_weather(
     os.environ.get("API_KEY"))
 
@@ -78,6 +79,7 @@ class User(db.Model, UserMixin):
 
 
 class RegistrationForm(FlaskForm):
+    # Creates the required fields for creating a user
     first_name = StringField('First Name', validators=[
         DataRequired(), Length(min=2, max=30)])
     last_name = StringField('Last Name', validators=[
@@ -104,6 +106,7 @@ class RegistrationForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
+    # Creates the required fields for logging in user
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
@@ -111,6 +114,7 @@ class LoginForm(FlaskForm):
 
 
 class UpdateAccountForm(FlaskForm):
+    # Allows user to update account information
     first_name = StringField('First Name', validators=[
         DataRequired(), Length(min=2, max=30)])
     last_name = StringField('Last Name', validators=[
@@ -138,6 +142,7 @@ class UpdateAccountForm(FlaskForm):
 
 
 class RequestResetForm(FlaskForm):
+    # Validates to see if account exists first
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Request Password Reset')
 
@@ -149,38 +154,39 @@ class RequestResetForm(FlaskForm):
 
 
 class ResetPasswordForm(FlaskForm):
+    # Allows users to change passwords
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[
         DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
 
 
-class SearchWeatherForm(FlaskForm):
-    city = StringField('Name of City', validators=[DataRequired()])
-    country = StringField('Enter Country', validators=[DataRequired()])
-    submit = SubmitField('Search')
-
-
-class SearchForm(FlaskForm):
-    startdate
-
-
 @app.route("/", methods=["GET", "POST"])
+# Homepage
+@login_required
 def index():
+    today = date.today()
+    return render_template("index.html", today=today)
 
-    return render_template("index.html")
 
+@app.route("/apod", methods=["GET", "POST"])
+# Gets Nasa's Image of the day - APOD
+@login_required
+def apod():
+    dates = applications.apod.get_date(response)
+    explanation = applications.apod.get_explanation(response)
+    hdurl = applications.apod.get_hdurl(response)
+    title = applications.apod.get_title(response)
 
-@app.route("/apod_search", methods=["GET", "POST"])
-def apod_search():
-    return render_template("apod_search.html")
+    return render_template("apod.html", dates=dates, explanation=explanation, hdurl=hdurl, title=title)
 
 
 @app.route("/weather", methods=["GET", "POST"])
+# Gets weather from OpenWeatherApp's API for 7 day forecast
+@login_required
 def weather():
-    if current_user.is_authenticated:
-        return redirect("/weather")
     if request.method == "POST":
+        # Pulls the current temperature of users location
         temp = applications.weather.get_temp(weather_current_data)
         feels = applications.weather.get_feel(weather_current_data)
         humid = applications.weather.get_humid(weather_current_data)
@@ -191,6 +197,7 @@ def weather():
         country = applications.weather.get_country(cur_location)
         desc = applications.weather.get_desc(weather_current_data)
         icon = applications.weather.get_icon(weather_current_data)
+        # Pulls day one of temperature of users location
         first_day = applications.weather.day_one(weather_daily_data)
         first_day_temp = applications.weather.today_day_temp(
             weather_daily_data)
@@ -200,6 +207,7 @@ def weather():
         first_day_desc = applications.weather.today_desc(weather_daily_data)
         first_day_humidity = applications.weather.today_humidity(
             weather_daily_data)
+        # Pulls day two of temperature of users location
         second_day = applications.weather.day_two(weather_daily_data)
         second_day_icon = applications.weather.day_two_icon(weather_daily_data)
         second_day_desc = applications.weather.day_two_desc(weather_daily_data)
@@ -209,6 +217,7 @@ def weather():
             weather_daily_data)
         second_day_humidity = applications.weather.day_two_humidity(
             weather_daily_data)
+        # Pulls day three of temperature of users location
         third_day = applications.weather.day_three(weather_daily_data)
         third_day_icon = applications.weather.day_three_icon(
             weather_daily_data)
@@ -220,6 +229,7 @@ def weather():
             weather_daily_data)
         third_day_humidity = applications.weather.day_three_humidity(
             weather_daily_data)
+        # Pulls day four of temperature of users location
         fourth_day = applications.weather.day_four(weather_daily_data)
         fourth_day_icon = applications.weather.day_four_icon(
             weather_daily_data)
@@ -231,6 +241,7 @@ def weather():
             weather_daily_data)
         fourth_day_humidity = applications.weather.day_four_humidity(
             weather_daily_data)
+        # Pulls day five of temperature of users location
         fifth_day = applications.weather.day_five(weather_daily_data)
         fifth_day_icon = applications.weather.day_five_icon(
             weather_daily_data)
@@ -242,6 +253,7 @@ def weather():
             weather_daily_data)
         fifth_day_humidity = applications.weather.day_five_humidity(
             weather_daily_data)
+        # Pulls day six of temperature of users location
         sixth_day = applications.weather.day_six(weather_daily_data)
         sixth_day_icon = applications.weather.day_six_icon(
             weather_daily_data)
@@ -253,6 +265,7 @@ def weather():
             weather_daily_data)
         sixth_day_humidity = applications.weather.day_six_humidity(
             weather_daily_data)
+        # Pulls day seven of temperature of users location
         seventh_day = applications.weather.day_seven(weather_daily_data)
         seventh_day_icon = applications.weather.day_seven_icon(
             weather_daily_data)
@@ -265,8 +278,8 @@ def weather():
         seventh_day_humidity = applications.weather.day_seven_humidity(
             weather_daily_data)
 
-        return render_template("weather.html", temp=temp, feels=feels, humid=humid, uvi=uvi, clouds=clouds, speed=speed,
-                               city=city, country=country, desc=desc, icon=icon, first_day=first_day, first_day_temp=first_day_temp, first_night_temp=first_night_temp,
+        return render_template("weather.html", temp=temp, feels=feels, humid=humid, uvi=uvi, clouds=clouds, speed=speed, city=city, country=country,
+                               desc=desc, icon=icon, first_day=first_day, first_day_temp=first_day_temp, first_night_temp=first_night_temp,
                                first_day_humidity=first_day_humidity, first_day_desc=first_day_desc, first_day_icon=first_day_icon,
                                second_day=second_day, second_day_desc=second_day_desc, second_day_icon=second_day_icon,
                                second_max_temp=second_max_temp, second_day_humidity=second_day_humidity, third_day_icon=third_day_icon,
@@ -282,6 +295,7 @@ def weather():
 
 
 @app.route("/register", methods=["GET", "POST"])
+# User creates an account to gain access
 def register():
     if current_user.is_authenticated:
         return redirect("/")
@@ -299,6 +313,7 @@ def register():
 
 
 @app.route("/login", methods=["GET", "POST"])
+# Logs users in and remembers users login info
 def login():
     if current_user.is_authenticated:
         return redirect("/")
@@ -377,6 +392,18 @@ def reset_request():
     return render_template("reset_request.html", title='Reset Password', form=form)
 
 
+@app.route("/about/")
+# The about page
+def about():
+    return render_template("about.html")
+
+
+@app.route("/contact/")
+# Contact page
+def contact():
+    return render_template("contact.html")
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
@@ -389,17 +416,3 @@ def page_not_found(e):
 
 if __name__ == '__main__':
     app.app(debug=True)
-
-# @app.route("/about/")
-# def about():
-#     return render_template("about.html")
-
-
-# @app.route("/contact/")
-# def contact():
-#     return render_template("contact.html")
-
-
-# @app.route("/api/data")
-# def get_data():
-#     return app.send_static_file("data.json")

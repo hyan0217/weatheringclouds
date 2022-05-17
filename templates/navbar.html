@@ -14,17 +14,12 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
         <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
             Dropdown button
           </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <li><a class="dropdown-item" href="{{url_for('apod')}}">APOD: Astronomy Picture Of the Day</a></li>
-            <li><a class="dropdown-item" href="{{url_for('asteroids')}}">Asteroid Tracking - NeoWs</a></li>
-            <li><a class="dropdown-item" href="{{url_for('epic')}}">EPIC</a></li>
             <li><a class="dropdown-item" href="{{url_for('weather')}}">Weather Forecast</a></li>
           </ul>
         </div>
@@ -41,10 +36,10 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         {% if current_user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="{{url_for('account')}}">Account</a>
+          <a id="category-directory" class="nav-link" href="{{url_for('account')}}">Account</a>
         </li>
           <li class="nav-item">
-          <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+          <a id="category-directory" class="nav-link" href="{{url_for('logout')}}">Logout</a>
         </li>
         {% else %}
         <li class="nav-item">
@@ -56,6 +51,6 @@
         {% endif %}
       </ul>
     </div>
-    <img src="{{url_for('static', filename="nasa-logo.png")}}" width="110" height="100"/>
+    <img src="{{url_for('static', filename="weather_cloud_icon.png")}}" width="10%"/>
   </div>
 </nav>

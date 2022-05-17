@@ -1,5 +1,4 @@
 import requests
-import os
 import json
 from datetime import datetime
 import applications.geolocation
@@ -8,6 +7,7 @@ response = applications.geolocation.get_data()
 
 
 def get_current_weather(api_key):
+    # Gets users current lat and long coordinates and returns current weather data
     lat = applications.geolocation.get_lat(response)
     lon = applications.geolocation.get_lon(response)
     raw_response = requests.get(
@@ -17,6 +17,7 @@ def get_current_weather(api_key):
 
 
 def get_daily_weather(api_key):
+    # Gets users current lat and long coordinates and returns daily weather data
     lat = applications.geolocation.get_lat(response)
     lon = applications.geolocation.get_lon(response)
     raw_response = requests.get(

@@ -11,10 +11,22 @@ def get_data():
 
 
 def get_lat(response):
-    lat = response['latitude']
+    try:
+        lat = response['latitude']
+    except KeyError:
+        lat
     return lat
 
 
 def get_lon(response):
-    lon = response['longitude']
+    try:
+        lon = response['longitude']
+    except KeyError:
+        lon
     return lon
+
+    # try:
+    #     lat = response['latitude']
+    # except KeyError:
+    #     lat
+    # return lat

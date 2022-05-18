@@ -399,10 +399,30 @@ def about():
     return render_template("about.html")
 
 
-@app.route("/articles", methods=["GET", "POST"])
+@app.route("/articles")
 # Articles page
 def articles():
     return render_template("articles.html")
+
+
+@app.route("/angelnumber33")
+def angelnumber33():
+    return render_template("angelnumber33.html")
+
+
+@app.route("/firespiritual")
+def firespiritual():
+    return render_template("firespiritual.html")
+
+
+@app.route("/lovesigns")
+def lovesigns():
+    return render_template("lovesigns.html")
+
+
+@app.route("/lifepath7")
+def lifepath7():
+    return render_template("lifepath7.html")
 
 
 @app.errorhandler(404)

@@ -21,18 +21,10 @@
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <li><a class="dropdown-item" href="{{url_for('apod')}}">APOD: Astronomy Picture Of the Day</a></li>
             <li><a class="dropdown-item" href="{{url_for('weather')}}">Weather Forecast</a></li>
+            <li><a class="dropdown-item" href="{{url_for('articles')}}">Law of Attraction Articles</a></li>
           </ul>
         </div>
       </ul>
-      <form class="d-flex">
-        <input
-          class="form-control me-2"
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-        />
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         {% if current_user.is_authenticated %}
         <li class="nav-item">

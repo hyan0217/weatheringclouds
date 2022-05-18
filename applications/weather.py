@@ -30,7 +30,7 @@ def get_location(api_key):
     lat = applications.geolocation.get_lat(response)
     lon = applications.geolocation.get_lon(response)
     raw_response = requests.get(
-        f'http://api.openweathermap.org/geo/1.0/reverse?appid={api_key}&limit=5&lat={lat}&lon={lon}').text
+        f'https://api.openweathermap.org/geo/1.0/reverse?appid={api_key}&limit=5&lat={lat}&lon={lon}').text
     cur_location = json.loads(raw_response)
     return cur_location
 

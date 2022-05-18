@@ -35,8 +35,7 @@ body {
 h1,
 h4,
 h5,
-h6,
-b {
+h6 {
   font-family: 'Koulen', cursive;
   font-weight: bolder;
 }

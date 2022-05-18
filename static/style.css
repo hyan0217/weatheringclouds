@@ -18,6 +18,20 @@ body {
   font-size: 20px;
 }
 
+.container1 {
+  position: relative;
+  float: right;
+  bottom: 100px;
+  left: 90px;
+}
+
+.pull-right {
+  font-size: 60px;
+  color: white;
+  inline-size: 10em;
+  overflow-wrap: break-word;
+}
+
 h1,
 h4,
 h5,
@@ -49,6 +63,11 @@ b {
   font-weight: 500;
 }
 
+#text_link {
+  color: white;
+  text-decoration: none;
+}
+
 .content-section {
   background: #ffffff;
   padding: 10px 20px;
@@ -61,8 +80,43 @@ b {
   color: white;
 }
 
+#headline-1 {
+  color: white;
+  font-size: 50px;
+}
+
+#apod_desc {
+  color: rgb(111, 24, 134);
+  font-size: 30px;
+  font-weight: 900;
+}
+
 #text_color {
   color: white;
+}
+
+#profile_links {
+  display: inline-block;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  font-size: 20px;
+  align-items: center;
+}
+
+#apod_paragraph {
+  color: white;
+}
+
+#parag_color {
+  color: white;
+  inline-size: 40em;
+  overflow-wrap: break-word;
+}
+
+#parag_color-right {
+  color: white;
+  inline-size: 35em;
 }
 
 .article-title {

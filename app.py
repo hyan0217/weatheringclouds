@@ -64,6 +64,7 @@ if not os.environ.get("API_KEY"):
 
 
 class User(db.Model, UserMixin):
+    # Creates users inside the database
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(30), nullable=False)
     last_name = db.Column(db.String(30), nullable=False)
@@ -392,16 +393,16 @@ def reset_request():
     return render_template("reset_request.html", title='Reset Password', form=form)
 
 
-@app.route("/about/")
+@app.route("/about")
 # The about page
 def about():
     return render_template("about.html")
 
 
-@app.route("/contact/")
-# Contact page
-def contact():
-    return render_template("contact.html")
+@app.route("/articles", methods=["GET", "POST"])
+# Articles page
+def articles():
+    return render_template("articles.html")
 
 
 @app.errorhandler(404)

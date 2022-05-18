@@ -1,5 +1,5 @@
 {% extends "layout.html" %} {% block content %}
-<h1 id="text_color" class="center-block">NASA Astronomy Picture Of The Day</h1>
+<h1 id="text_color" class="center-block text-center">NASA Astronomy Picture Of The Day</h1>
 <div class="mt-lg-4">
 <h2 id="text_color">Today's Title: {{title}} </h2>
 <h3 id="text_color">Date: <span id="date">{{dates}}</span></h3>
@@ -7,7 +7,8 @@
 <img class="center-block" src="{{hdurl}}" alt="NASA Picture of The Day" width="100%">
 <div class="mt-lg-4">
 <blockquote class="blockquote text-center">
-<p id="text_color"><b id="text_color">Description:</b> {{explanation}}</p>
+<h3 id="apod_desc">DESCRIPTION</h3>
+<p id="apod_paragraph">{{explanation}}</p>
 </blockquote>
 </div>
 {% endblock %}

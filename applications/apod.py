@@ -1,6 +1,7 @@
-from flask import render_template
 import requests
 import json
+
+# Uses Nasa's API to get daily image of the day
 
 
 def get_data(api_key):

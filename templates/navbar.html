@@ -16,7 +16,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-            Pockets of Fun
+            <b>Explore The Projects</b>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <li><a class="dropdown-item" href="{{url_for('apod')}}">APOD: Astronomy Picture Of the Day</a></li>
@@ -25,13 +25,15 @@
           </ul>
         </div>
       </ul>
+      <img src="{{url_for('static', filename="nasa_icon.png")}}" width="5%">
+      <img src="{{url_for('static', filename="openweather_icon.png")}}" width="10%" />
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         {% if current_user.is_authenticated %}
         <li class="nav-item">
-          <a id="category-directory" class="nav-link" href="{{url_for('account')}}">Account</a>
+          <a class="nav-link" href="{{url_for('account')}}">Account</a>
         </li>
           <li class="nav-item">
-          <a id="category-directory" class="nav-link" href="{{url_for('logout')}}">Logout</a>
+          <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
         </li>
         {% else %}
         <li class="nav-item">

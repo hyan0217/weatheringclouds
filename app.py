@@ -164,7 +164,6 @@ class ResetPasswordForm(FlaskForm):
 
 @app.route("/", methods=["GET", "POST"])
 # Homepage
-@login_required
 def index():
     today = date.today()
     return render_template("index.html", today=today)
@@ -395,32 +394,38 @@ def reset_request():
 
 @app.route("/about")
 # The about page
+@login_required
 def about():
     return render_template("about.html")
 
 
 @app.route("/articles")
 # Articles page
+@login_required
 def articles():
     return render_template("articles.html")
 
 
 @app.route("/angelnumber33")
+@login_required
 def angelnumber33():
     return render_template("angelnumber33.html")
 
 
 @app.route("/firespiritual")
+@login_required
 def firespiritual():
     return render_template("firespiritual.html")
 
 
 @app.route("/lovesigns")
+@login_required
 def lovesigns():
     return render_template("lovesigns.html")
 
 
 @app.route("/lifepath7")
+@login_required
 def lifepath7():
     return render_template("lifepath7.html")
 

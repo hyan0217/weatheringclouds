@@ -22,7 +22,7 @@ body {
   position: relative;
   float: right;
   bottom: 100px;
-  left: 90px;
+  left: 65px;
 }
 
 .pull-right {
@@ -73,10 +73,6 @@ h6 {
   border: 1px solid #dddddd;
   border-radius: 3px;
   margin-bottom: 20px;
-}
-
-#category-directory {
-  color: white;
 }
 
 #headline-1 {

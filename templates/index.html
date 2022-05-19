@@ -52,16 +52,21 @@
 <hr style="width:100%", size="10">
 <div class="container">
     <div class="row">
+        {% if current_user.is_authenticated %}
         <div class="col-sm m-3">
-            <h2 id="text_color"><b class="fs-1">Hello {{ current_user.username }} And Welcome To My Website!</b></h2>
+            <h2 id="text_color"><b class="fs-1">Hello {{ current_user.first_name }} and welcome to my website!</b></h2>
             <br/>
             <h3 id="text_color" class="fs-5">Today's Date is: {{today}}</h3>
         </div>
         <div class="col-sm">
-            <p id="text_color" class="m-4">I'm Henry and thank you for visiting my site. Please feel free to explore around and don't forget to test the Nasa and weather app I've created!</p>
+            <p id="text_color" class="m-4">I'm Henry and thank you for visiting my site. Please feel free to explore around and test the Nasa and weather app I've created!</p>
             <p id="text_color" class="m-4">Please don't hesitate to contact me if you have any questions! This page is created as a project for CS50 Harvard University.</p>
             <p id="text_color" class="m-4">For more information about me please visit my about page below.</p>
         </div>
+        {% else %}
+        <p id="text_color" class="text-center fs-1">Welcome to Weathering Clouds!</p>
+        <p id="text_color" class="text-center fs-6">Make sure to <a href="{{ url_for('register') }}"><b>Register</b></a> for an account in order to see all the content my site has to offer!</p>
+        {% endif %}
     </div>
 </div>
 <hr style="width:100%", size="10">

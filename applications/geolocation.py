@@ -1,3 +1,4 @@
+from http.client import responses
 import requests
 import json
 
@@ -11,18 +12,16 @@ def get_data():
 
 
 def get_lat(response):
-    lat = response['latitude']
     try:
-        lat
+        lat = response['latitude']
     except KeyError:
         pass
     return lat
 
 
 def get_lon(response):
-    lon = response['longitude']
     try:
-        lon
+        lon = response['longitude']
     except KeyError:
         pass
     return lon

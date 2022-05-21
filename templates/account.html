@@ -84,6 +84,12 @@
                     <div class="form-group">
                     {{ form.submit(class="btn btn-outline-info") }}
                     </div>
+                    <br/>
+                    <div class="border-top pt-3">
+                        <small>
+                            Need to reset your password? <a class="ml-2" href="{{ url_for('reset_request') }}">Reset Password</a>
+                        </small>
+                    </div>
             </form>
     </div>
 {% endblock content %}

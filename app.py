@@ -156,8 +156,8 @@ class RequestResetForm(FlaskForm):
 
 class ResetPasswordForm(FlaskForm):
     # Allows users to change passwords
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password', validators=[
+    password = PasswordField('New Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm New Password', validators=[
         DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
 
@@ -378,18 +378,21 @@ def account():
     return render_template("account.html", title='Account', image_file=image_file, form=form)
 
 
-@app.route("/reset_password", methods=["GET", "POST"])
-@login_required
+@app.route("/reset_request", methods=["GET", "POST"])
 # Allows user to reset their passwords
 def reset_request():
+    form = ResetPasswordForm()
     if current_user.is_authenticated:
-        return redirect("/")
-    form = RequestResetForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        flash('An email has been sent with instructions to reset your password.', 'info')
-        return redirect("/login")
-    return render_template("reset_request.html", title='Reset Password', form=form)
+        if form.validate_on_submit():
+            hashed_password = bcrypt.generate_password_hash(
+                form.password.data).decode('utf-8')
+            form.password.data = hashed_password
+            current_user.password = form.password.data
+            db.session.commit()
+            flash(
+                'You password has been updated!', 'success')
+            return redirect("/reset_request")
+        return render_template("reset_request.html", title='Reset Password', form=form)
 
 
 @app.route("/about")

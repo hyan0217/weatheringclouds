@@ -72,7 +72,7 @@
 <hr style="width:100%", size="10">
 <div class="container">
     <div class="row">
-        <div class="col-sm m-2">
+        <div class="col-sm">
             <a id="text_link" href="{{ url_for('apod') }}">
                 <h2><b class="fs-1">Get NASA's Image Of The Day</b></h2>
             </a>
@@ -80,10 +80,10 @@
                 <img src="{{url_for('static', filename="iotd_api.jpg")}}" class="pull-right" width="100%" height="400px" alt="Henry's Image of the day from Nasa">
             </a>
             <a id="text_link" href="{{ url_for('apod') }}">
-                <p id="parag_color-right" class="m-2">The image of the day is pulled directly from Nasa's database using api.</p>
+                <p id="parag_color" class="m-2">The image of the day is pulled directly from Nasa's database using api.</p>
             </a>
         </div>
-        <div class="col-sm m-2">
+        <div class="col-sm">
             <a id="text_link" href="{{ url_for('weather') }}">
                 <h2 id="text_color"><b class="fs-1">Check Your Local Weather</b></h2>
             </a>
@@ -91,43 +91,42 @@
                 <img src="{{url_for('static', filename="owp_api.jpg")}}" class="pull-right" width="100%" height="400px" alt="Henry's Weather App from WeatherOpenMap">
             </a>
             <a id="text_link" href="{{ url_for('weather') }}">
-                <p id="parag_color-right" class="m-2">This weather app is using WeatherOpenMap's Dark Sky API to obtain the most accurate and up-to-date weather.</p>
+                <p id="parag_color" class="m-2">This weather app is using WeatherOpenMap's Dark Sky API to obtain the most accurate and up-to-date weather.</p>
             </a>
         </div>
     </div>
 </div>
 <hr style="width:100%", size="10">
+<br/>
+<h2 class="pull-right text-center">EXPLORE THE APIs THAT MADE THESE PROJECTS POSSIBLE</h2>
+<br/>
 <div class="container">
     <div class="row">
-        <div class="col-sm m-3">
+        <div class="col-sm">
             <a id="text_link" href="https://api.nasa.gov/">
                 <h2><b class="fs-1">Explore NASA's API</b></h2>
             </a>
             <a href="https://api.nasa.gov/">
-                <img src="{{url_for('static', filename="milky_way_nasa.jpg")}}" width="50%" height="400px" alt="Explore Nasa's API">
+                <img src="{{url_for('static', filename="milky_way_nasa.jpg")}}" width="100%" height="400px" alt="Explore Nasa's API">
             </a>
             <a id="text_link" href="https://api.nasa.gov/">
-                <p id="parag_color" class="m-2">Take a look at NASA's API portal. Free to use and the objective of the site is to make use of NASA's data, 
+                <p id="parag_color" class="col-sm m-2">Take a look at NASA's API portal. Free to use and the objective of the site is to make use of NASA's data, 
                 including imagery, eminently accessible to application developers. The main goal is to focus on broadly useful and user friendly APIs.</p>
             </a>
         </div>
     </div>
 </div>
-<div class="container1">
-    <h2 class="pull-right">EXPLORE THE APIs THAT MADE THESE PROJECTS POSSIBLE</h2>
-</div>
-<hr style="width:50%", size="10"> 
 <div class="container">
     <div class="row">
-        <div class="col-sm m-3">
+        <div class="col-sm">
             <a id="text_link" href="https://openweathermap.org/api">
-                <h2 id="text_color"><b class="fs-1">Explore WeatherOpenMap's API</b></h2>
+                <h2><b class="fs-1">Explore WeatherOpenMap's API</b></h2>
             </a>
             <a href="https://openweathermap.org/api">
-                <img src="{{url_for('static', filename="rainy_day_weather.jpg")}}" width="93%" height="400px" alt="Explore more of OpenWeatherMap's API">
+                <img src="{{url_for('static', filename="rainy_day_weather.jpg")}}" width="100%" height="400px" alt="Explore more of OpenWeatherMap's API">
             </a>
             <a id="text_link" href="https://openweathermap.org/api">
-                <p id="parag_color" class="m-2">Experience real-time and accurate weather with the free api from OpenWeather. OpenWeather platform is a set of elegant and widely recognisable APIs. 
+                <p id="parag_color" class="col-sm m-2">Experience real-time and accurate weather with the free api from OpenWeather. OpenWeather platform is a set of elegant and widely recognisable APIs. 
                 Powered by convolutional machine learning solutions, it is capable of delivering all the weather information necessary for decision-making for any location on the globe.</p>
             </a>
         </div>

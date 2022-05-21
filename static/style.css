@@ -18,17 +18,10 @@ body {
   font-size: 20px;
 }
 
-.container1 {
-  position: relative;
-  float: right;
-  bottom: 100px;
-  left: 65px;
-}
-
 .pull-right {
   font-size: 60px;
   color: white;
-  inline-size: 10em;
+  text-align: center;
   overflow-wrap: break-word;
 }
 
@@ -103,15 +96,12 @@ h6 {
   color: white;
 }
 
-#parag_color {
-  color: white;
-  inline-size: 40em;
-  overflow-wrap: break-word;
+#icons {
+  margin-left: 20px;
 }
 
-#parag_color-right {
+#parag_color {
   color: white;
-  inline-size: 35em;
 }
 
 .article-title {

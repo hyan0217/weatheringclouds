@@ -5,11 +5,6 @@ import applications.geolocation
 
 response = applications.geolocation.get_data()
 
-<<<<<<< HEAD
-=======
-geolocator = Nominatim(user_agent="weather")
-
->>>>>>> master
 
 def get_current_weather(api_key):
     # Gets users current lat and long coordinates and returns current weather data

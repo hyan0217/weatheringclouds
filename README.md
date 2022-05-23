@@ -8,7 +8,7 @@
 
 <p><b>Besides the default flask libary, I am also using the following imports below:</b><p>
 
--Gunicorn in order for my Python Flask application to function on Heroku servers.
+<h4>-Gunicorn in order for my Python Flask application to function on Heroku servers.</h4>
 -Flask_wtf for providing a user interface for users.
 -WTForms to render text fields, field requirements and buttons.
 -SQLAlchemy to communicate and store with my database.

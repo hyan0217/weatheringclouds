@@ -1,8 +1,10 @@
 # WEATHERING CLOUDS
 
 ####  Youtube video instructions
+TODO
 
-#### Direct Webpage Link
+#### Live Server Webpage Link
+https://weatheringclouds.herokuapp.com/
 
 ## Description: 
 
@@ -28,9 +30,11 @@ I then passed the data parameters into <b>OpenWeatherMaps One Call Dark Sky API<
 
 For my last project, I've had previous manifestation articles that I hired someone to write for me for my old website that I've never got the chance to work on. This one was simple as it only required additional html pages for storing the articles(4 in total).
 
-After finishing everything locally, I added the <b>Procfile</b> that specifies certain commands that are executed by the app on startup for <b>Heroku</b> along with the <b>requirements.txt</b> file to let Heroku know what import libaries are being used. I then installed <b>Postgres</b> on my Heroku server in order to have an online database so everyone will have access when they create an account of their own.  
+After finishing everything locally, I added the <b>Procfile</b> that specifies certain commands that are executed by the app on startup for <b>Heroku</b> along with the <b>requirements.txt</b> file to let Heroku know what import libaries are being used. I then installed <b>Postgres</b> on my Heroku server in order to have an online database so everyone will have access when they create an account of their own. 
 
-The last part of this project was to upload the flask application onto Heroku. Heroku is a free web hosting service for students which I <b>highly recommend!</b>
+Next, I created a proxy server to make an request to my website which will then make a request to the original source: the API company. The proxy server is powered by Express. <b>Original source code is provided by https://github.com/MauricioRobayo/api-key-proxy-server</b>
+
+The last part of this project was to upload my flask application onto Heroku. Heroku is a free web hosting service for students which I <b>highly recommend!</b>
 
 ## Libraries Used In This Project
 
@@ -44,4 +48,6 @@ The last part of this project was to upload the flask application onto Heroku. H
 #### -Flask_Migrate in order for Flask and SQLAlchemy to work together properly.
 #### -Secret in order to generate a secret key to protect against cookie data tampering.
 #### -Python PIL to open and manipulate images for users profile avatar.
-#### -Requests 
+#### -Requests allows you to send HTTP requests and returning an response data using Python.
+#### -JSON encodes data into JSON format and deserialize back into readable code.
+#### -API-Key-Proxy-Server makes a request from own webpage to the API call site.

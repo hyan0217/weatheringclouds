@@ -30,14 +30,14 @@ weather_daily_data = applications.weather.get_daily_weather(
 cur_location = applications.weather.get_location(
     os.environ.get("API_KEY"))
 
+SECRET_KEY = os.environ.get("SECRET_KEY")
+
 
 app = Flask(__name__)
 # Connecting to the Database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://fqynupfmgfwmad:11761e23bb9545022e3b1d45555fc6155ff7e31c7e42fa6b2dd1a99623b60447@ec2-18-214-134-226.compute-1.amazonaws.com:5432/d191cjrfl7dcnm'
 # Secret Key
-app.config['SECRET_KEY'] = "2c1b9360123f14339ae48bcd70433bf3"
-app.config['SECRET_KEY'] = "11761e23bb9545022e3b1d45555fc6155ff7e31c7e42fa6b2dd1a99623b60447"
+app.config['SECRET_KEY'] = ""
 # Initialize Database
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -58,7 +58,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-# Make sure API key is set
+# Makes sure API key is set
 if not os.environ.get("API_KEY"):
     raise RuntimeError("API_KEY not set")
 

@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, flash, redirect, request, session, url_for
+from flask import Flask, render_template, flash, redirect, request, url_for
 import gunicorn
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
@@ -12,35 +12,29 @@ from flask_migrate import Migrate
 import secrets
 from datetime import date
 from PIL import Image
+from applications.config import Config
 import applications.apod
 import applications.weather
 import applications.geolocation
 
 # Nasa's API key
-response = applications.apod.get_data(
-    'DEMO_KEY')
-
+nasa_image = applications.apod.get_data(os.environ.get("NASA_API_KEY"))
 # OpenWeatherMap's API key
 weather_current_data = applications.weather.get_current_weather(
-    os.environ.get("API_KEY"))
+    os.environ.get("WEATHER_API_KEY"))
 
 weather_daily_data = applications.weather.get_daily_weather(
-    os.environ.get("API_KEY"))
+    os.environ.get("WEATHER_API_KEY"))
 
 cur_location = applications.weather.get_location(
-    os.environ.get("API_KEY"))
-
-SECRET_KEY = os.environ.get("SECRET_KEY")
+    os.environ.get("WEATHER_API_KEY"))
 
 
 app = Flask(__name__)
 # Connecting to the Database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-# Secret Key
-app.config['SECRET_KEY'] = ""
-# Initialize Database
+app.config.from_object(Config)
 # Ensure templates are auto-reloaded
-app.config["TEMPLATES_AUTO_RELOAD"] = True
+TEMPLATES_AUTO_RELOAD = True
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 # Generates hashed passwords
@@ -48,9 +42,9 @@ bcrypt = Bcrypt(app)
 # Remembers the users login credentials
 login_manager = LoginManager(app)
 # Requires user to login to access info
-login_manager.login_view = 'login'
+login_manager.login_view = "login"
 # Flashier blue alert message
-login_manager.login_message_category = 'info'
+login_manager.login_message_category = "info"
 
 
 @login_manager.user_loader
@@ -59,8 +53,11 @@ def load_user(user_id):
 
 
 # Makes sure API key is set
-if not os.environ.get("API_KEY"):
-    raise RuntimeError("API_KEY not set")
+if not os.environ.get("WEATHER_API_KEY"):
+    raise RuntimeError("OpenWeatherMap Api Key not set")
+
+if not os.environ.get("NASA_API_KEY"):
+    raise RuntimeError("NASA Api Key not set")
 
 
 class User(db.Model, UserMixin):
@@ -71,7 +68,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False,
-                           default='default.jpg')
+                           default="default.jpg")
     password = db.Column(db.String(60), nullable=False)
 
     # Creating a string
@@ -81,85 +78,85 @@ class User(db.Model, UserMixin):
 
 class RegistrationForm(FlaskForm):
     # Creates the required fields for creating a user
-    first_name = StringField('First Name', validators=[
+    first_name = StringField("First Name", validators=[
         DataRequired(), Length(min=2, max=30)])
-    last_name = StringField('Last Name', validators=[
+    last_name = StringField("Last Name", validators=[
         DataRequired(), Length(min=2, max=30)])
-    username = StringField('Username', validators=[
+    username = StringField("Username", validators=[
                            DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password', validators=[
-        DataRequired(), EqualTo('password')])
-    submit = SubmitField('Sign Up Now')
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    confirm_password = PasswordField("Confirm Password", validators=[
+        DataRequired(), EqualTo("password")])
+    submit = SubmitField("Sign Up Now")
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user:
             raise ValidationError(
-                'Username is already taken. Please choose a different username.')
+                "Username is already taken. Please choose a different username.")
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError(
-                'Email is already taken. Please choose a different email.')
+                "Email is already taken. Please choose a different email.")
 
 
 class LoginForm(FlaskForm):
     # Creates the required fields for logging in user
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember = BooleanField('Remember Me')
-    submit = SubmitField('Login')
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    remember = BooleanField("Remember Me")
+    submit = SubmitField("Login")
 
 
 class UpdateAccountForm(FlaskForm):
     # Allows user to update account information
-    first_name = StringField('First Name', validators=[
+    first_name = StringField("First Name", validators=[
         DataRequired(), Length(min=2, max=30)])
-    last_name = StringField('Last Name', validators=[
+    last_name = StringField("Last Name", validators=[
         DataRequired(), Length(min=2, max=30)])
-    username = StringField('Username', validators=[
+    username = StringField("Username", validators=[
                            DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    picture = FileField('Update Profile Picture', validators=[
-                        FileAllowed(['jpg', 'png'])])
-    submit = SubmitField('Update')
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    picture = FileField("Update Profile Picture", validators=[
+                        FileAllowed(["jpg", "png"])])
+    submit = SubmitField("Update")
 
     def validate_username(self, username):
         if username.data != current_user.username:
             user = User.query.filter_by(username=username.data).first()
             if user:
                 raise ValidationError(
-                    'Username is already taken. Please choose a different username.')
+                    "Username is already taken. Please choose a different username.")
 
     def validate_email(self, email):
         if email.data != current_user.email:
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError(
-                    'Email is already taken. Please choose a different email.')
+                    "Email is already taken. Please choose a different email.")
 
 
 class RequestResetForm(FlaskForm):
     # Validates to see if account exists first
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    submit = SubmitField('Request Password Reset')
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    submit = SubmitField("Request Password Reset")
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is None:
             raise ValidationError(
-                'There is no account with that email. You must register first.')
+                "There is no account with that email. You must register first.")
 
 
 class ResetPasswordForm(FlaskForm):
     # Allows users to change passwords
-    password = PasswordField('New Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm New Password', validators=[
-        DataRequired(), EqualTo('password')])
-    submit = SubmitField('Reset Password')
+    password = PasswordField("New Password", validators=[DataRequired()])
+    confirm_password = PasswordField("Confirm New Password", validators=[
+        DataRequired(), EqualTo("password")])
+    submit = SubmitField("Reset Password")
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -173,10 +170,10 @@ def index():
 # Gets Nasa's Image of the day - APOD
 @login_required
 def apod():
-    dates = applications.apod.get_date(response)
-    explanation = applications.apod.get_explanation(response)
-    hdurl = applications.apod.get_hdurl(response)
-    title = applications.apod.get_title(response)
+    dates = applications.apod.get_date(nasa_image)
+    explanation = applications.apod.get_explanation(nasa_image)
+    hdurl = applications.apod.get_hdurl(nasa_image)
+    title = applications.apod.get_title(nasa_image)
 
     return render_template("apod.html", dates=dates, explanation=explanation, hdurl=hdurl, title=title)
 
@@ -307,9 +304,9 @@ def register():
                     email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been created! You are now able to log in.', 'success')
+        flash("Your account has been created! You are now able to log in.", "success")
         return redirect("/login")
-    return render_template("register.html", title='Register', form=form)
+    return render_template("register.html", title="Register", form=form)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -322,11 +319,11 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
-            next_page = request.args.get('next')
+            next_page = request.args.get("next")
             return redirect(next_page) if next_page else redirect("/")
         else:
-            flash('Login Unsuccessful. Please check email and password', 'danger')
-    return render_template("login.html", title='Login', form=form)
+            flash("Login Unsuccessful. Please check email and password", "danger")
+    return render_template("login.html", title="Login", form=form)
 
 
 @app.route("/logout")
@@ -342,7 +339,7 @@ def save_picture(form_picture):
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
     picture_path = os.path.join(
-        app.root_path, 'static/profile_pics', picture_fn)
+        app.root_path, "static/profile_pics", picture_fn)
     # Scales down images to prevent server overload
     output_size = (125, 125)
     i = Image.open(form_picture)
@@ -366,7 +363,7 @@ def account():
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()
-        flash('Your account has been updated!', 'success')
+        flash("Your account has been updated!", "success")
         return redirect("/account")
     elif request.method == "GET":
         form.first_name.data = current_user.first_name
@@ -374,8 +371,8 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
     image_file = url_for(
-        'static', filename='profile_pics/' + current_user.image_file)
-    return render_template("account.html", title='Account', image_file=image_file, form=form)
+        "static", filename="profile_pics/" + current_user.image_file)
+    return render_template("account.html", title="Account", image_file=image_file, form=form)
 
 
 @app.route("/reset_request", methods=["GET", "POST"])
@@ -385,14 +382,14 @@ def reset_request():
     if current_user.is_authenticated:
         if form.validate_on_submit():
             hashed_password = bcrypt.generate_password_hash(
-                form.password.data).decode('utf-8')
+                form.password.data).decode("utf-8")
             form.password.data = hashed_password
             current_user.password = form.password.data
             db.session.commit()
             flash(
-                'You password has been updated!', 'success')
+                "You password has been updated!", "success")
             return redirect("/reset_request")
-        return render_template("reset_request.html", title='Reset Password', form=form)
+        return render_template("reset_request.html", title="Reset Password", form=form)
 
 
 @app.route("/about")
@@ -443,5 +440,5 @@ def page_not_found(e):
     return render_template("500.html"), 500
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.app(debug=True)

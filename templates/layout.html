@@ -18,7 +18,7 @@
     <title>Weathering Clouds</title>
   </head>
   <body>
-    {% include 'navbar.html' %}
+    {% include "navbar.html" %}
     <br />
     <main role="main" class="container">
           {% with messages = get_flashed_messages(with_categories=true) %} 
@@ -27,6 +27,6 @@
       {% endfor %} {% endif %} {% endwith %} {% block content %} {% endblock %}
     </main>
     <br />
-     {% include 'footer.html' %}
+     {% include "footer.html" %}
   </body>
 </html>

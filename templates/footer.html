@@ -14,7 +14,7 @@
             <i class="fas fa-gem me-3"></i>Weathering Clouds
           </h6>
           <p id="category-directory">
-            Check out Nasa's Image of the day or just simply check the weather in your area!
+            Check out Nasa"s Image of the day or just simply check the weather in your area!
           </p>
         </div>
         <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
@@ -22,16 +22,16 @@
             Explore More
           </h6>
           <p>
-            <a href="{{url_for('about')}}" class="text-reset">About</a>
+            <a href="{{url_for("about")}}" class="text-reset">About</a>
           </p>
           <p>
-            <a id="category-directory" href="{{url_for('articles')}}" class="text-reset">Articles</a>
+            <a id="category-directory" href="{{url_for("articles")}}" class="text-reset">Articles</a>
           </p>
           <p>
-            <a id="category-directory" href="{{url_for('weather')}}" class="text-reset">Weather App</a>
+            <a id="category-directory" href="{{url_for("weather")}}" class="text-reset">Weather App</a>
           </p>
           <p>
-            <a id="category-directory" href="{{url_for('apod')}}" class="text-reset">NASA IMOTD</a>
+            <a id="category-directory" href="{{url_for("apod")}}" class="text-reset">NASA IMOTD</a>
           </p>
         </div>
         <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
@@ -46,7 +46,7 @@
           </p>
         </div>
         <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-          <img src="{{url_for('static', filename="weather_cloud_icon.png")}}" width="100%"/>
+          <img src="{{url_for("static", filename="weather_cloud_icon.png")}}" width="100%"/>
         </div>
       </div>
     </div>

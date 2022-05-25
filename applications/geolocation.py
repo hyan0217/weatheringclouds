@@ -5,14 +5,14 @@ import json
 
 
 def get_data():
-    raw_response = requests.get(f'https://ipapi.co/json/').text
+    raw_response = requests.get(f"https://ipapi.co/json/").text
     response = json.loads(raw_response)
     return response
 
 
 def get_lat(response):
     try:
-        lat = response['latitude']
+        lat = response["latitude"]
     except KeyError:
         pass
     return lat
@@ -20,7 +20,7 @@ def get_lat(response):
 
 def get_lon(response):
     try:
-        lon = response['longitude']
+        lon = response["longitude"]
     except KeyError:
         pass
     return lon

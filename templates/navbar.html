@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{{url_for('index')}}">Weathering Clouds</a>
+    <a class="navbar-brand" href="{{url_for("index")}}">Weathering Clouds</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -19,33 +19,33 @@
             <b>Explore The Projects</b>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="{{url_for('apod')}}">APOD: Astronomy Picture Of the Day</a></li>
-            <li><a class="dropdown-item" href="{{url_for('weather')}}">Weather Forecast</a></li>
-            <li><a class="dropdown-item" href="{{url_for('articles')}}">Law of Attraction Articles</a></li>
+            <li><a class="dropdown-item" href="{{url_for("apod")}}">APOD: Astronomy Picture Of the Day</a></li>
+            <li><a class="dropdown-item" href="{{url_for("weather")}}">Weather Forecast</a></li>
+            <li><a class="dropdown-item" href="{{url_for("articles")}}">Law of Attraction Articles</a></li>
           </ul>
         </div>
       </ul>
-      <img id="icons" src="{{url_for('static', filename="nasa_icon.png")}}" width="5%">
-      <img id="icons" src="{{url_for('static', filename="ipapi.png")}}" width="5%" />
-      <img id="icons" src="{{url_for('static', filename="openweather_icon.png")}}" width="10%" />
+      <img id="icons" src="{{url_for("static", filename="nasa_icon.png")}}" width="5%">
+      <img id="icons" src="{{url_for("static", filename="ipapi.png")}}" width="5%" />
+      <img id="icons" src="{{url_for("static", filename="openweather_icon.png")}}" width="10%" />
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         {% if current_user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="{{url_for('account')}}">Account</a>
+          <a class="nav-link" href="{{url_for("account")}}">Account</a>
         </li>
           <li class="nav-item">
-          <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+          <a class="nav-link" href="{{url_for("logout")}}">Logout</a>
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link" href="{{url_for('login')}}">Login</a>
+          <a class="nav-link" href="{{url_for("login")}}">Login</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{url_for('register')}}">Register</a>
+          <a class="nav-link" href="{{url_for("register")}}">Register</a>
         </li>
         {% endif %}
       </ul>
     </div>
-    <img src="{{url_for('static', filename="weather_cloud_icon.png")}}" width="10%"/>
+    <img src="{{url_for("static", filename="weather_cloud_icon.png")}}" width="10%"/>
   </div>
 </nav>

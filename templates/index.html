@@ -11,28 +11,28 @@
     </div>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img class="d-block w-100" src="{{url_for('static', filename="bright_clouds.jpg")}}" alt="Bright sunlight shining out from the skies">
+            <img class="d-block w-100" src="{{url_for("static", filename="bright_clouds.jpg")}}" alt="Bright sunlight shining out from the skies">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Natural Sunlight</h5>
                 <p>Bright and sunny skies signals the coming of spring.</p>
             </div>
         </div>
         <div class="carousel-item">
-            <img class="d-block w-100" src="{{url_for('static', filename="sunset.jpg")}}" alt="Sunsetting in the countryside">
+            <img class="d-block w-100" src="{{url_for("static", filename="sunset.jpg")}}" alt="Sunsetting in the countryside">
             <div class="carousel-caption d-none d-md-block">
                 <h5>The perfect Sunset</h5>
                 <p>As the night approaches... the sun shall set. </p>
             </div>
         </div>
         <div class="carousel-item">
-            <img class="d-block w-100" src="{{url_for('static', filename="lightning_sky.jpg")}}" alt="Dark sky with thunderstorm">
+            <img class="d-block w-100" src="{{url_for("static", filename="lightning_sky.jpg")}}" alt="Dark sky with thunderstorm">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Lightning Never Strikes Twice</h5>
                 <p>With the dark skies, comes the thundering clouds.</p>
             </div>
         </div>
         <div class="carousel-item">
-            <img class="d-block w-100" src="{{url_for('static', filename="foggy_sky.jpg")}}" alt="Early foggy morning">
+            <img class="d-block w-100" src="{{url_for("static", filename="foggy_sky.jpg")}}" alt="Early foggy morning">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Early Morning Fog</h5>
                 <p>As the sun rises and the fog appears... So shall the breath of fresh air.</p>
@@ -65,7 +65,7 @@
         </div>
         {% else %}
         <p id="text_color" class="text-center fs-1">Welcome to Weathering Clouds!</p>
-        <p id="text_color" class="text-center fs-6">Make sure to <a href="{{ url_for('register') }}"><b>Register</b></a> for an account in order to see all the content my site has to offer!</p>
+        <p id="text_color" class="text-center fs-6">Make sure to <a href="{{ url_for("register") }}"><b>Register</b></a> for an account in order to see all the content my site has to offer!</p>
         {% endif %}
     </div>
 </div>
@@ -73,24 +73,24 @@
 <div class="container">
     <div class="row">
         <div class="col-sm">
-            <a id="text_link" href="{{ url_for('apod') }}">
+            <a id="text_link" href="{{ url_for("apod") }}">
                 <h2><b class="fs-1">Get NASA's Image Of The Day</b></h2>
             </a>
-            <a href="{{ url_for('apod') }}">
-                <img src="{{url_for('static', filename="iotd_api.jpg")}}" class="pull-right" width="100%" height="400px" alt="Henry's Image of the day from Nasa">
+            <a href="{{ url_for("apod") }}">
+                <img src="{{url_for("static", filename="iotd_api.jpg")}}" class="pull-right" width="100%" height="400px" alt="Henry's Image of the day from Nasa">
             </a>
-            <a id="text_link" href="{{ url_for('apod') }}">
+            <a id="text_link" href="{{ url_for("apod") }}">
                 <p id="parag_color" class="m-2">The image of the day is pulled directly from Nasa's database using api.</p>
             </a>
         </div>
         <div class="col-sm">
-            <a id="text_link" href="{{ url_for('weather') }}">
+            <a id="text_link" href="{{ url_for("weather") }}">
                 <h2 id="text_color"><b class="fs-1">Check Your Local Weather</b></h2>
             </a>
-            <a href="{{ url_for('weather') }}">
-                <img src="{{url_for('static', filename="owp_api.jpg")}}" class="pull-right" width="100%" height="400px" alt="Henry's Weather App from WeatherOpenMap">
+            <a href="{{ url_for("weather") }}">
+                <img src="{{url_for("static", filename="owp_api.jpg")}}" class="pull-right" width="100%" height="400px" alt="Henry's Weather App from WeatherOpenMap">
             </a>
-            <a id="text_link" href="{{ url_for('weather') }}">
+            <a id="text_link" href="{{ url_for("weather") }}">
                 <p id="parag_color" class="m-2">This weather app is using WeatherOpenMap's Dark Sky API to obtain the most accurate and up-to-date weather.</p>
             </a>
         </div>
@@ -107,7 +107,7 @@
                 <h2><b class="fs-1">Explore NASA's API</b></h2>
             </a>
             <a href="https://api.nasa.gov/">
-                <img class="rounded mx-auto d-block" src="{{url_for('static', filename="milky_way_nasa.jpg")}}" width="80%" height="400px" alt="Explore Nasa's API">
+                <img class="rounded mx-auto d-block" src="{{url_for("static", filename="milky_way_nasa.jpg")}}" width="80%" height="400px" alt="Explore Nasa's API">
             </a>
             <a id="text_link" href="https://api.nasa.gov/">
                 <p id="parag_color" class="col-sm m-2">Take a look at NASA's API portal. Free to use and the objective of the site is to make use of NASA's data, 
@@ -123,7 +123,7 @@
                 <h2><b class="fs-1">Explore WeatherOpenMap's API</b></h2>
             </a>
             <a href="https://openweathermap.org/api">
-                <img class="rounded mx-auto d-block" src="{{url_for('static', filename="rainy_day_weather.jpg")}}" width="80%" height="400px" alt="Explore more of OpenWeatherMap's API">
+                <img class="rounded mx-auto d-block" src="{{url_for("static", filename="rainy_day_weather.jpg")}}" width="80%" height="400px" alt="Explore more of OpenWeatherMap's API">
             </a>
             <a id="text_link" href="https://openweathermap.org/api">
                 <p id="parag_color" class="col-sm m-2">Experience real-time and accurate weather with the free api from OpenWeather. OpenWeather platform is a set of elegant and widely recognisable APIs. 
@@ -139,7 +139,7 @@
                 <h2><b class="fs-1">Explore IPAPIs API</b></h2>
             </a>
             <a href="https://ipapi.co/#api">
-                <img class="rounded mx-auto d-block" src="{{url_for('static', filename="navigational.jpg")}}" width="80%" height="400px" alt="Explore more of IPAPI's API">
+                <img class="rounded mx-auto d-block" src="{{url_for("static", filename="navigational.jpg")}}" width="80%" height="400px" alt="Explore more of IPAPI's API">
             </a>
             <a id="text_link" href="https://ipapi.co/#api">
                 <p id="parag_color" class="col-sm m-2">A Powerful and Simple REST API for IP Address Geolocation.</p>

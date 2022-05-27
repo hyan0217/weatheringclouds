@@ -18,7 +18,7 @@ import applications.weather
 import applications.geolocation
 
 # Nasa's API key
-nasa_image = applications.apod.get_data(os.environ.get("NASA_API_KEY"))
+nasa_image = applications.apod.get_data("DEMO_KEY")
 # OpenWeatherMap's API key
 weather_current_data = applications.weather.get_current_weather(
     os.environ.get("WEATHER_API_KEY"))
@@ -55,9 +55,6 @@ def load_user(user_id):
 # Makes sure API key is set
 if not os.environ.get("WEATHER_API_KEY"):
     raise RuntimeError("OpenWeatherMap Api Key not set")
-
-if not os.environ.get("NASA_API_KEY"):
-    raise RuntimeError("NASA Api Key not set")
 
 
 class User(db.Model, UserMixin):

@@ -1,7 +1,7 @@
 body {
   color: #333333;
   margin-top: 5rem;
-  background-image: url("nightsky_transparent.png");
+  background: url("nightsky_transparent.png");
 }
 
 #headline_index {

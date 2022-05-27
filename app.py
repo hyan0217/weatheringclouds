@@ -34,7 +34,7 @@ app = Flask(__name__)
 # Connecting to the Database
 app.config.from_object(Config)
 # Ensure templates are auto-reloaded
-TEMPLATES_AUTO_RELOAD = True
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 # Generates hashed passwords

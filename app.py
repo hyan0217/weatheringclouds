@@ -21,13 +21,13 @@ import applications.geolocation
 nasa_image = applications.apod.get_data("DEMO_KEY")
 # OpenWeatherMap's API key
 weather_current_data = applications.weather.get_current_weather(
-    os.environ.get("WEATHER_API_KEY"))
+    os.environ.get("API_KEY"))
 
 weather_daily_data = applications.weather.get_daily_weather(
-    os.environ.get("WEATHER_API_KEY"))
+    os.environ.get("API_KEY"))
 
 cur_location = applications.weather.get_location(
-    os.environ.get("WEATHER_API_KEY"))
+    os.environ.get("API_KEY"))
 
 
 app = Flask(__name__)
@@ -53,7 +53,7 @@ def load_user(user_id):
 
 
 # Makes sure API key is set
-if not os.environ.get("WEATHER_API_KEY"):
+if not os.environ.get("API_KEY"):
     raise RuntimeError("OpenWeatherMap Api Key not set")
 
 

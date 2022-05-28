@@ -12,7 +12,6 @@ from flask_migrate import Migrate
 import secrets
 from datetime import date
 from PIL import Image
-from applications.config import Config
 import applications.apod
 import applications.weather
 import applications.geolocation
@@ -32,13 +31,14 @@ cur_location = applications.weather.get_location(
 
 app = Flask(__name__)
 # Connecting to the Database
-# app.config.from_object(Config)
-# Secret Key for Postgresql stored local environment
-SECRET_KEY = os.environ.get("SECRET_KEY")
-# Connecting to the Database stored local environment
-SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URI")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://fqynupfmgfwmad:11761e23bb9545022e3b1d45555fc6155ff7e31c7e42fa6b2dd1a99623b60447@ec2-18-214-134-226.compute-1.amazonaws.com:5432/d191cjrfl7dcnm'
+# Secret Key
+app.config['SECRET_KEY'] = "2c1b9360123f14339ae48bcd70433bf3"
+app.config['SECRET_KEY'] = "11761e23bb9545022e3b1d45555fc6155ff7e31c7e42fa6b2dd1a99623b60447"
+# Initialize Database
 # Ensure templates are auto-reloaded
-app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 # Generates hashed passwords
@@ -46,9 +46,9 @@ bcrypt = Bcrypt(app)
 # Remembers the users login credentials
 login_manager = LoginManager(app)
 # Requires user to login to access info
-login_manager.login_view = "login"
+login_manager.login_view = 'login'
 # Flashier blue alert message
-login_manager.login_message_category = "info"
+login_manager.login_message_category = 'info'
 
 
 @login_manager.user_loader

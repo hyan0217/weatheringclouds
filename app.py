@@ -36,7 +36,7 @@ app = Flask(__name__)
 # Secret Key for Postgresql stored local environment
 SECRET_KEY = os.environ.get("SECRET_KEY")
 # Connecting to the Database stored local environment
-SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
+SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URI")
 # Ensure templates are auto-reloaded
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 db = SQLAlchemy(app)
